@@ -64,7 +64,7 @@ class OrderModel extends CI_Model {
 		$product_id =  $data['product_id'] ;
 		$profit_total = $this->getProductProfit($data); 
 		$levels=1  ;
-		while( $levels < 8 ){
+		while( $levels <= 8 ){
 			// echo $levels ;
 			
 			$find_my_parent = $this->getHigherLevel($find_my_parent) ;

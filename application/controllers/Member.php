@@ -314,27 +314,31 @@ class Member extends CI_Controller {
  		$arr=[];
  		
 		foreach($getChildMember as $row){///level 2
-						$NetSaleVolume3=$this->MemberModel->NetSaleVolume($row['id']);
-					$arr[] = [ 
+		 $NetSaleVolume3=$this->MemberModel->NetSaleVolume($row['id']);
+		 $profit_amount=$this->MemberModel->getProfitAmount( $row['id']) ;
+		 $profit_percentage=$this->MemberModel->getProfitPercentage( $row['id']) ;
+		 $arr[] = [ 
 						 'ibo' => $row['name'].' ['.$row['id'].']',
 						 'imgUrl' => $this->UserModel->MemberPictureUrl($row['id']),
-						 'profit_amount' => $NetSaleVolume3,
-						 'profit_percentage' => $NetSaleVolume3,
+						 'profit_amount' => $profit_amount,
+						 'profit_percentage' => $profit_percentage,
 						 'children' => $this->Children($row['id']),
-						 'total_sales' => 1000,
+						 'total_sales' => $NetSaleVolume3,
  					 ];
 		}
+		$profit_amount=$this->MemberModel->getProfitAmount( $id) ;
+		$profit_percentage=$this->MemberModel->getProfitPercentage( $id) ;
 		$NetSaleVolume1=$this->MemberModel->NetSaleVolume($id);
 		$json = [	'ibo' => $member['name'].' ['.$member['id'].']',
 					'imgUrl' => $this->UserModel->MemberPictureUrl($member['id']),
-					'profit_amount' => $NetSaleVolume1,
-					'profit_percentage' => $NetSaleVolume1,
-					'total_sales' => 1000,
+					'profit_amount' => $profit_amount,
+					'profit_percentage' => $profit_percentage,
+					'total_sales' => $NetSaleVolume1,
 					'children' => $arr
 				];
 				
 		//echo '<pre>';
- 		//print_r($json);
+		 //print_r($json);
 		echo json_encode([$json]);
 		
 		
@@ -348,12 +352,14 @@ class Member extends CI_Controller {
  		
 		foreach($getChildMember as $row){///level 2
 						$NetSaleVolume3=$this->MemberModel->NetSaleVolume($row['id']);
+						$profit_percentage=$this->MemberModel->getProfitPercentage($row['id']) ;
+						$profit_amount=$this->MemberModel->getProfitAmount( $row['id']) ;
 					$arr[] = [ 
 					    'ibo' => $row['name'].' ['.$row['id'].']',
 						'imgUrl' => $this->UserModel->MemberPictureUrl($row['id']),
-						'profit_amount' => $NetSaleVolume3,
-						'profit_percentage' => $NetSaleVolume3,
-						'total_sales' => 1000,
+						'profit_amount' =>$profit_amount,
+						'profit_percentage' =>  $profit_percentage,
+						'total_sales' => $NetSaleVolume3,
  						'children' => $this->Children($row['id']),
  					 ];
 		}

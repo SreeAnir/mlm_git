@@ -21,6 +21,7 @@ class MemberModel extends CI_Model {
 	
 
 	private $Member = 'member_log';
+	private $ProfitShare = 'profit_share';
 
   	
 
@@ -84,7 +85,38 @@ class MemberModel extends CI_Model {
 
    	}
 
-	
+	public function getProfitPercentage($parent_id){
+		$res = $this->db->select('SUM(profit_percentage) as pp'); 
+		$pp=0;
+		$this->db->from($this->ProfitShare);
+
+		$this->db->where('parent_id',$parent_id);
+
+		   $query = $this->db->get();
+		   if ($query->num_rows() > 0) {
+			$pp = $query->row()->pp;
+		} 
+		return (int)$pp;
+
+
+	}
+	public function getProfitAmount($parent_id){
+		$pp=0;
+		$res = $this->db->select('SUM(profit) as pp'); 
+
+		$this->db->from($this->ProfitShare);
+
+		$this->db->where('parent_id',$parent_id);
+		
+		$query = $this->db->get();
+		
+		   if ($query->num_rows() > 0) {
+			$pp = $query->row()->pp;
+		} 
+		return (int)$pp;
+
+	}
+
 
 	public function NetSaleVolume($member_id)
 

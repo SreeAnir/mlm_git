@@ -5,9 +5,9 @@
     <h5>
     <span class=""><img class="img-circle" src="{{t.imgUrl}}"></span><br>
     <small>Name : </small>{{t.ibo}}<br>
-    <small>Total Sales: </small>{{t.total_sales}}<br>
-    <small>Profit Perecentage: </small>{{t.profit_percentage}}<br>
-    <small>Profit Amount: </small>{{t.profit_amount}}<br>
+    <small>Total Sales: </small>{{t.total_sales}} {{scheduleInfo.currency}}<br>
+    <small>Profit Perecentage: </small>{{t.profit_percentage}} %<br>
+    <small>Profit Amount: </small>{{t.profit_amount}} {{scheduleInfo.currency}}<br>
 
     <!-- <small>Bonus Level: </small>{{(t.bonusRate || 0)*100 + "%"}}<br> -->
     <!-- <small>Total PV: </small>{{t.totalPv || 0}}<br> -->
