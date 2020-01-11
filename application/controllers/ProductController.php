@@ -14,8 +14,8 @@ class ProductController extends CI_Controller {
 
 				$this->load->model(['ProductModel','CategoryModel']);
 
-                $this->SeesionModel->not_logged_in();
-				$this->SeesionModel->is_logged_Admin();
+                $this->SessionModel->not_logged_in();
+				$this->SessionModel->is_logged_Admin();
 
         }
 
@@ -24,21 +24,21 @@ class ProductController extends CI_Controller {
 	public function index() 
 
 	{
-
-		$data['category']=$this->CategoryModel->DropDownCategory();
-
-  		$this->parser->parse('product/add_product_template',$data);
+echo "progress" ;
+	
 
 	}
+///	$data['category']=$this->CategoryModel->DropDownCategory();
 
+  	///	$this->parser->parse('product/add_product_template',$data);
 	public function product_list_template() 
 
 	{
+		echo "progress" ;
 
-  		$this->parser->parse('product/product_list_template',[]);
 
 	}
-
+	// $this->parser->parse('product/product_list_template',[]);
 	
 
 	public function add_product(){

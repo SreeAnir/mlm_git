@@ -12,7 +12,7 @@ class AdminLoginController extends CI_Controller {
 
 	{
 
-		$this->SeesionModel->is_logged_in();
+		$this->SessionModel->is_logged_in();
 
 		$this->load->view('login/Login_template');
 
@@ -28,7 +28,7 @@ class AdminLoginController extends CI_Controller {
 
 		
 
-		$this->SeesionModel->is_logged_in();
+		$this->SessionModel->is_logged_in();
 
 		//$this->OuthModel->CSRFVerify(); 
 

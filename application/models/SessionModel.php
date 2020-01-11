@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class SeesionModel extends CI_Model {
+class SessionModel extends CI_Model {
 
   	public function __construct()
         {

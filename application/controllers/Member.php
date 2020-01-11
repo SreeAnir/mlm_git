@@ -6,14 +6,14 @@ class Member extends CI_Controller {
         {
                 parent::__construct();
 				$this->load->model(['MemberModel']);
-                $this->SeesionModel->not_logged_in();
+                $this->SessionModel->not_logged_in();
 				
          }
 	
  
   	public function view_member() 
 	{
-		$this->SeesionModel->is_logged_Admin();
+		$this->SessionModel->is_logged_Admin();
  		
  		$id=$this->OuthModel->Encryptor('decrypt',$this->input->get('id'));
 		 
@@ -318,14 +318,18 @@ class Member extends CI_Controller {
 					$arr[] = [ 
 						 'ibo' => $row['name'].' ['.$row['id'].']',
 						 'imgUrl' => $this->UserModel->MemberPictureUrl($row['id']),
- 						'bv' => $NetSaleVolume3,
- 						'children' => $this->Children($row['id']),
+						 'profit_amount' => $NetSaleVolume3,
+						 'profit_percentage' => $NetSaleVolume3,
+						 'children' => $this->Children($row['id']),
+						 'total_sales' => 1000,
  					 ];
 		}
 		$NetSaleVolume1=$this->MemberModel->NetSaleVolume($id);
 		$json = [	'ibo' => $member['name'].' ['.$member['id'].']',
 					'imgUrl' => $this->UserModel->MemberPictureUrl($member['id']),
-					'bv' => $NetSaleVolume1,
+					'profit_amount' => $NetSaleVolume1,
+					'profit_percentage' => $NetSaleVolume1,
+					'total_sales' => 1000,
 					'children' => $arr
 				];
 				
@@ -345,9 +349,11 @@ class Member extends CI_Controller {
 		foreach($getChildMember as $row){///level 2
 						$NetSaleVolume3=$this->MemberModel->NetSaleVolume($row['id']);
 					$arr[] = [ 
-						 'ibo' => $row['name'].' ['.$row['id'].']',
-						 'imgUrl' => $this->UserModel->MemberPictureUrl($row['id']),
- 						'bv' => $NetSaleVolume3,
+					    'ibo' => $row['name'].' ['.$row['id'].']',
+						'imgUrl' => $this->UserModel->MemberPictureUrl($row['id']),
+						'profit_amount' => $NetSaleVolume3,
+						'profit_percentage' => $NetSaleVolume3,
+						'total_sales' => 1000,
  						'children' => $this->Children($row['id']),
  					 ];
 		}

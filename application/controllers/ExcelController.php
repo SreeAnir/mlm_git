@@ -10,8 +10,8 @@ class ExcelController extends CI_Controller {
 
 		$this->load->model(['PurchaseProductModel']);
 
-		$this->SeesionModel->not_logged_in();
-		$this->SeesionModel->is_logged_Admin();
+		$this->SessionModel->not_logged_in();
+		$this->SessionModel->is_logged_Admin();
 
     }
 

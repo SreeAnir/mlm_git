@@ -5,14 +5,11 @@
     <h5>
     <span class=""><img class="img-circle" src="{{t.imgUrl}}"></span><br>
     <small>Name : </small>{{t.ibo}}<br>
-    <small>Total Sales: </small>{{t.total_sales}}<br>
-    <small>Profit Perecentage: </small>{{t.profit_percentage}}<br>
-    <small>Profit Amount: </small>{{t.profit_amount}}<br>
-
-    <!-- <small>Bonus Level: </small>{{(t.bonusRate || 0)*100 + "%"}}<br> -->
-    <!-- <small>Total PV: </small>{{t.totalPv || 0}}<br> -->
-    <!-- <small>Total BV: </small>{{t.totalBv || 0}}<br> -->
-    <!-- <small>Bonus: {{scheduleInfo.currency}}</small>{{t.bonus || 0}} -->
+    <small>Self BV: </small>{{t.bv}}<br>
+    <small>Bonus Level: </small>{{(t.bonusRate || 0)*100 + "%"}}<br>
+    <small>Total PV: </small>{{t.totalPv || 0}}<br>
+    <small>Total BV: </small>{{t.totalBv || 0}}<br>
+    <small>Bonus: {{scheduleInfo.currency}}</small>{{t.bonus || 0}}
     </h5>
     <!--<a href="" title="Add a new downline" class="add-button hiten" ng-click="addNode(t)"><span class="label label-success">+</span></a>
     <a href="" title="Delete this IBO and its downlines" class="pull-right hiten" ng-click="deleteNode(tree,$index)"><span class="label label-default">x</span></a>-->

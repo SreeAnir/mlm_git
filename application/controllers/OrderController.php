@@ -14,8 +14,8 @@ class OrderController extends CI_Controller {
 
 				$this->load->model(['OrderModel','ProductModel','MemberModel']);
 
-                $this->SeesionModel->not_logged_in();
-				$this->SeesionModel->is_logged_Admin();
+                $this->SessionModel->not_logged_in();
+				$this->SessionModel->is_logged_Admin();
 
         }
 
@@ -88,7 +88,10 @@ class OrderController extends CI_Controller {
 	}
 
 	
+	public function manual_order(){
+		$query = $this->OrderModel->manualOrder();
 
+	}
 	public function add_order(){
 
 		
@@ -283,7 +286,7 @@ class OrderController extends CI_Controller {
 									'qty' => $post['qty'],
 									'is_igst' => $post['is_igst'],
 									'unit_price' => $post['price'],
-
+								
  									'create_date' => date('Y-m-d H:i:s'),
 
  								];

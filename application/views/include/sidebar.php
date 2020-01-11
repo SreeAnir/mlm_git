@@ -48,7 +48,7 @@
           <li class="<?php if($uri=='add-product'){ echo 'active';}?>"><a href="<?=base_url('v3/add-product');?>"><i class="fa fa-plus"></i> Add Product</a></li>
             <li class="<?php if($uri=='product-list'){ echo 'active';}?>"><a href="<?=base_url('v3/product-list');?>"><i class="fa fa-list"></i> Listing</a></li>
             <li class="<?php if($uri=='category-list'){ echo 'active';}?>"><a href="<?=base_url('v3/category-list');?>"><i class="fa fa-list"></i> Category</a></li>
-            <li class="<?php if($uri=='purchase-product'){echo'active';}?>"><a href="<?=base_url('v3/purchase-product');?>"><i class="fa fa-product-hunt"></i>Purchase </a></li>
+            <!-- <li class="<?php if($uri=='purchase-product'){echo'active';}?>"><a href="<?=base_url('v3/purchase-product');?>"><i class="fa fa-product-hunt"></i>Purchase </a></li> -->
            </ul> 
         </li>
         

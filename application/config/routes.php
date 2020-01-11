@@ -34,6 +34,8 @@ $route['edit_product'] = 'ProductController/edit_product';
 $route['trash-product'] = 'ProductController/product_trash';
 
 
+$route['v3/manual-order'] = 'OrderController/manual_order';
+
 
 $route['v3/add-order'] = 'OrderController/index';
 $route['v3/order-list'] = 'OrderController/order_list_template';

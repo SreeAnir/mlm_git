@@ -6,8 +6,8 @@ class PurchaseController extends CI_Controller {
         {
                 parent::__construct();
 				$this->load->model(['PurchaseProductModel']);
-                $this->SeesionModel->not_logged_in();
-				$this->SeesionModel->is_logged_Admin();
+                $this->SessionModel->not_logged_in();
+				$this->SessionModel->is_logged_Admin();
         }
  	public function index()
 	{

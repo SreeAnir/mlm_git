@@ -6,7 +6,7 @@ class DashboardController extends CI_Controller {
         {
                 parent::__construct();
 				$this->load->model(['OrderModel','MemberModel']);
-                $this->SeesionModel->not_logged_in();
+                $this->SessionModel->not_logged_in();
         }
 	
 	public function Month(){
