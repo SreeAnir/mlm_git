@@ -42,7 +42,7 @@ class ProductModel extends CI_Model {
  	}
   	public function DropDownProducts()
 	{  
- 		$this->db->select('id,ProductName,SalePrice');
+ 		$this->db->select('*');
 		$this->db->from($this->Product);
    		$query = $this->db->get();
  		if ($query) {
@@ -62,8 +62,7 @@ class ProductModel extends CI_Model {
 		$res = $query->row_array();
 		return $res['picture_url'];
    	}
-	
-	
+	 
 	
 	 public function GetProductById($id) 
 	{  

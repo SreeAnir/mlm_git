@@ -12,7 +12,7 @@ class SessionModel extends CI_Model {
  	public function is_logged_in()
 	{  
  		if(isset($this->session->userdata['Admin']['logged_in']) == 'TRUE' ){
-			redirect(base_url('v3/dashboard'));
+			redirect(base_url('home'));
 		} 
   	}
  	public function not_logged_in()

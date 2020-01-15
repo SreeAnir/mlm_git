@@ -9,6 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 */
 $route['default_controller'] = 'AdminLoginController';
+$route['home'] = 'HomeController/index';
+$route['home/product_grid'] = 'HomeController/product_grid';
+
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 

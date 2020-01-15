@@ -348,7 +348,7 @@ echo "progress" ;
 				
 
 	}
-
+	
 	
 
 	public function product_view(){ 

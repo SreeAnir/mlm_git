@@ -15,7 +15,7 @@ class DashboardController extends CI_Controller {
 	
 	public function index() 
 	{
-		
+		 
 		if($this->session->userdata['Admin']['role'] == 'Admin'){
  			
 			$data['orders']=$this->db->count_all_results('orders');
