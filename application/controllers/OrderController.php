@@ -92,6 +92,8 @@ class OrderController extends CI_Controller {
 		$query = $this->OrderModel->manualOrder();
 
 	}
+	
+	
 	public function add_order(){
 
 		

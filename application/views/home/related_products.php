@@ -1,11 +1,12 @@
 
 
  <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<?php $this->load->view('include/front/header');?>
-<div  id="product-wrapper">
+ <h3 class="alert alert-info"> More Recommendations </h3>
+<div  id="wrapper-related">
 </div>
 
 <script type="text/javascript">
+var product_id ='<?=$product_id;?>' ;
     $(function () {
       loadpage(0);
    });
@@ -24,8 +25,8 @@
 
    function loadpage(from){
     let dataSend=[];
-      dataSend={from:from};
-      $('#product-wrapper').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
+      dataSend={from:from,type:'related',id:product_id  };
+      $('#wrapper-related').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
       console.log(dataSend);
     $.ajax({
          type: "POST",
@@ -36,9 +37,9 @@
               {
                 if(data.code == 400)
                 {
-                  $('#product-wrapper').html(data.error);  
+                  $('#wrapper-related').html(data.error);  
                 }else{
-                  $('#product-wrapper').html(data);
+                  $('#wrapper-related').html(data);
                 }
             },
             error: function (jqXHR, status, err) {
@@ -48,5 +49,4 @@
           });
    }
 </script>
-<?php $this->load->view('include/front/footer');?>
  

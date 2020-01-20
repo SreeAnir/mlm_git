@@ -73,9 +73,9 @@ class DashboardController extends CI_Controller {
 					'bv' => $NetSaleVolume1,
 					'children' => $arr
 				];
+				return ($json['ibo']);
 				
- 
-		return count($json['ibo']);
+		//return count($json['ibo']);
 		
 		
 	}

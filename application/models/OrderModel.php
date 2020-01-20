@@ -26,14 +26,16 @@ class OrderModel extends CI_Model {
  	}
 	 public function manualOrder(){
 		$data=array();
-		$data['order_id'] = '03451578720656' ;
-		$data['member_id'] = 346 ;
-		$data['member_name'] = 'Pintu' ;
-		$data['product_id'] = '234260' ;
-		$data['qty'] =1 ;
-		$data['is_igst'] ='undefined' ;
-		$data['unit_price'] =10000 ;
-		$this->updateProfitForParents($data );
+		print_r($_SESSION);
+		die();
+		// $data['order_id'] = '03451578720656' ;
+		// $data['member_id'] = 346 ;
+		// $data['member_name'] = 'Pintu' ;
+		// $data['product_id'] = '234260' ;
+		// $data['qty'] =1 ;
+		// $data['is_igst'] ='undefined' ;
+		// $data['unit_price'] =10000 ;
+		// $this->updateProfitForParents($data );
 	 }
 	 public function getProductProfit($data){
 		$product_id =  $data['product_id'] ;
@@ -45,7 +47,6 @@ class OrderModel extends CI_Model {
 
 		$this->db->where("id",$product_id);
 		$query = $this->db->get(); 
-
 		if ($query->num_rows() > 0) {
 			$Price = $query->row()->Price;
 			$SalePrice = $query->row()->SalePrice;

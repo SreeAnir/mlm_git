@@ -34,12 +34,30 @@ echo "progress" ;
 	public function product_list_template() 
 
 	{
-		echo "progress" ;
-
+		//echo "progress 1" ;
+    $this->parser->parse('product/product_list_template',[]);
 
 	}
 	// $this->parser->parse('product/product_list_template',[]);
-	
+	public function view(){
+		$product_id = $this->uri->segment(2);
+		$product_id = $this->encrypt->decode( $product_id)  ;
+		$query = $this->db->select('products.*, COUNT( orders.id) as products_sold')->
+		join('orders','products.id =orders.product_id ','Left')->group_by('products.id')->get_where('products', array('products.id' => $product_id) )
+		;
+		 $data=array();
+		 $data['details']=array();
+		foreach ($query->result() as $row){	
+			$data['details']=$row;		 
+		}
+		 $breadcrumb         = array(
+            "Home" => "home",
+            $data['details']->ProductCategory => '' ,
+            $data['details']->ProductName => ""
+		);
+        $data['breadcrumb'] = $breadcrumb;
+		 $this->load->view('product/view',$data);
+	}
 
 	public function add_product(){
 

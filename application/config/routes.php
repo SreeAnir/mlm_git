@@ -11,10 +11,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'AdminLoginController';
 $route['home'] = 'HomeController/index';
 $route['home/product_grid'] = 'HomeController/product_grid';
+$route['view/(:any)/(:any?)'] = 'HomeController/view';
+$route['buy-now/(:any)'] = 'HomeController/buy_now';
+$route['orders-status/(:any?)'] = 'HomeController/user_order';
 
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
 
 $route['authlogincheck'] = 'AdminLoginController/ovecab_seatsellers_authlogincheck';
 $route['admin-logout'] = 'AdminLoginController/seatsellers_logout';
