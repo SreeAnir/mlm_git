@@ -15,19 +15,19 @@
   <?php
 
 $obj=&get_instance();
-
 $obj->load->model('UserModel');
 
-$profile_url = $obj->UserModel->PictureUrl();
-
-$user=$obj->UserModel->GetUserData();
+if( isset( $this->session->userdata['Admin']) ){
+   $profile_url = $obj->UserModel->PictureUrl();
+   $user=$obj->UserModel->GetUserData();
+}else{
+   $profile_url  = base_url().'public/dist/img/avatar5.png'; ;
+}
+ 
 
 ?>
-
     <a class="active" href="<?= base_url(); ?>/home">Home</a>
     <a  href="<?= base_url(); ?>v3/dashboard" ><img src="<?=$profile_url;?>" class="top-user-image" alt="User Image"> </a>
-    
-
   </div>
 </div>
 <div class="container" >

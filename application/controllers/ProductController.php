@@ -24,8 +24,9 @@ class ProductController extends CI_Controller {
 	public function index() 
 
 	{
-echo "progress" ;
-	
+ 	$data['category']=$this->CategoryModel->DropDownCategory();
+
+  	 	$this->parser->parse('product/add_product_template',$data);	
 
 	}
 ///	$data['category']=$this->CategoryModel->DropDownCategory();

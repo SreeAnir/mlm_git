@@ -66,6 +66,10 @@ class HomeController extends CI_Controller {
 
 			$user=$obj->UserModel->GetUserData(); 
 			$product= $this->OrderModel->GetProductById($product_id);
+			if($user['id']==""){
+				redirect(base_url()."/" );
+			}
+
 			$order_data = [ 	
 
 				'order_id' => '0'.$user['id'].time(),

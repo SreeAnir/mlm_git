@@ -341,7 +341,8 @@ padding-bottom: 2px;
 
 .product-deatil .name {
   margin-top: 0;
-  margin-bottom: 0
+  margin-bottom: 0 ;
+  height : 40px;
 }
 
 .product-deatil .name small {

@@ -13,7 +13,7 @@ class OrderModel extends CI_Model {
 	private $Member = 'member_log';
 	private $ProfitShare = 'profit_share';
 	private $Product = 'products';
-	private $CompanyUser = 2;
+	private $CompanyUserAdmin = 2;
  	
 	public function AddOrder($data)
 	{  
@@ -71,12 +71,17 @@ class OrderModel extends CI_Model {
 			$find_my_parent = $this->getHigherLevel($find_my_parent) ;
 			//ProfitShare , insert data 
 				if( $find_my_parent == 0 ){
-					$find_my_parent= $this->CompanyUser;
+					$find_my_parent= $this->CompanyUserAdmin;
+
 				}
 				$data_profit = array();
 				$data_profit['order_id'] = $order_id ;
 				$data_profit['member_id'] = $member_id ;
 				$data_profit['parent_id'] = $find_my_parent ;
+				$data_profit['clear_status'] = 0;	
+				if($this->CompanyUserAdmin ==  $find_my_parent  ){
+					$data_profit['clear_status'] = 1;	
+				}
 				
 				if($levels==1){
 					$profit_percentage=35;

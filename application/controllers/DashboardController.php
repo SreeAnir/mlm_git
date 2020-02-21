@@ -17,11 +17,15 @@ class DashboardController extends CI_Controller {
 	{
 		 
 		if($this->session->userdata['Admin']['role'] == 'Admin'){
- 			
+			 $sum =0;
+			 $this->db->select('SUM(profit) AS profit_amount', FALSE);
+			 $this->db->where('clear_status <>',1);
+			 $query = $this->db->get('profit_share');
+			 
 			$data['orders']=$this->db->count_all_results('orders');
 			$data['members']=$this->OveModel->TotalMembers();
 			$data['products']=$this->db->count_all_results('products');
-			$data['purchase_products']=$this->db->count_all_results('purchase_products');
+			$data['profit_share_pending']=$query->row()->profit_amount;
 			
 			$sales = $this->OrderModel->MonthWiseSale();
 			
@@ -44,8 +48,163 @@ class DashboardController extends CI_Controller {
 			$this->parser->parse('dashboard/dashboard_customer_template',$data);
 		}
  		
- 	}
+	 }
+	 
 	
+	public function profit_share_update(){
+		$data =$_REQUEST ;
+		$this->db->where('id', $data['id']);
+		$update = $this->db->update('profit_share', array("clear_status" => $data['clear_status']));
+		$msg="Failed to Update";
+		$err=1;
+		if($update){
+		$msg="Updated the status" ;
+		$err=0;
+		}
+		$json_data = array(
+
+			"id"  => $data['id'],
+			"status" => $data['clear_status'] , // total number of records after searching,  
+			"message"            => $msg   ,  // total data array 
+			"error"            => $err   // total data array
+			);
+
+ 	   echo json_encode($json_data);
+	}
+	public function profit_share_grid_data(){
+
+		$this->OuthModel->CSRFVerify();
+
+		$requestData = $_REQUEST;
+
+  		$table = "profit_share";
+
+		$fields = "id, order_id, member_id, parent_id, product_id,clear_status,cleared_on,profit,level,profit_percentage ";
+
+ 		$id = '';
+
+		$where = " ";
+
+ 		$sql = "SELECT ".$fields;
+
+		$sql.=" FROM ".$table. $where;
+
+ 		//echo $sql;
+
+ 		$query = $this->db->query($sql);
+
+		$queryqResults = $query->result();
+
+ 		$totalData = $query->num_rows(); // rules datatable
+
+		$totalFiltered = $totalData; // rules datatable
+
+
+		$where = " ";
+
+ 		$sql = "SELECT ".$fields;
+
+ 		$sql.=" FROM ".$table . $where ;
+
+
+		if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
+
+			$searchValue = $requestData['search']['value'];
+
+			$sql.=" WHERE `order_id` LIKE '%".$searchValue."%' ";   
+
+ 			$sql.=" OR `product_id` LIKE '%".$searchValue."%' ";
+
+		}
+
+
+ 		$query = $this->db->query($sql);
+
+ 		$totalFiltered = $query->num_rows(); // rules datatable
+
+ 		//ORDER BY id DESC	
+
+ 		$sql.=" ORDER BY create_date DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+ 		$query = $this->db->query($sql);
+
+ 		//echo $sql;
+
+ 		$SearchResults = $query->result();
+
+		
+
+  		$data = array();
+		  $order_id= '';
+		foreach($SearchResults as $row){
+			if($order_id!= $row->order_id ){
+				$order_id=  $row->order_id ;
+			}
+
+			$nestedData=array(); 
+
+			$id = $row->id;
+
+			
+
+			$url_id=$this->OuthModel->Encryptor('encrypt',$row->order_id);
+
+			
+
+			$tableCheckTD = "<label class='pos-rel'><input type='checkbox' class='ace' /><span class='lbl'></span></label>";
+ 			$action =  '<div class="action-buttons"><a target="_blank" href="'.base_url('v3/invoice/print-view?id='.$url_id).'" class="green">
+																	<i class="ace-icon fa fa-print bigger-130"></i>
+																</a>&nbsp;&nbsp;&nbsp;
+ 				<a onclick="trash('.$id.')"  class="red trashID" href="javascript:void(0);">
+																	<i class="ace-icon fa fa-trash bigger-130"></i>
+																</a>												
+ 															</div>';
+
+ 			$nestedData[] = '<span class="nameID_'.$id.'">'.$row->order_id.'</span>';
+
+			$nestedData[] = '<span class="profildShare_'.$id.'">'.$row->product_id.'</span>';
+
+			$nestedData[] = '<span class="profildShare_'.$id.'">'.$this->UserModel->GetMemberNameById($row->parent_id).'</span>';
+
+			$nestedData[] = '<span class="profildShare_'.$id.'">'.$row->profit.'</span>';
+			$nestedData[] = '<span class="profildShare_'.$id.'">'.$row->profit_percentage.'</span>';
+			$status='';
+			if( $row->clear_status =='1' ){
+				$status='checked="checked"';
+			}
+			$nestedData[] = '<span class="profileShare_'.$id.'"><input data-attr="'.$id.'" class="profile_share_change" type="checkbox"  '.$status.'></span>';
+
+
+			$nestedData[] = $row->cleared_on;
+
+			$nestedData[] =  $action; 
+
+  			$data[] = $nestedData;
+
+		}
+
+ 		$json_data = array(
+
+					"draw"            => intval( $requestData['draw'] ),  
+
+					"recordsTotal"    => intval( $totalData ),  // total number of records
+
+					"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching,  
+
+					"data"            => $data   // total data array
+
+					);
+
+ 		echo json_encode($json_data);  // send data as json format					
+
+				
+
+	}
+
+	
+	public function profit_share_list(){
+		$this->parser->parse('dashboard/profit_share_list',[]);
+	}
 	public function Parent(){
 		
  

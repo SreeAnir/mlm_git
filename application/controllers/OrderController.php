@@ -25,11 +25,18 @@ class OrderController extends CI_Controller {
 
 	{
 
-		
-
 		$data['products'] = $this->ProductModel->DropDownProducts();
 
   		$this->parser->parse('order/add_order_template',$data);
+
+	}
+	public function mailtest() 
+
+	{
+
+		$mail = $this->SendMail(['templateName' =>"Develeoper Sri",'templateEmail' => "sreekalaanirudhan1020@gmail.com", 'templatePassword' =>"hoihitestpassword", ]);
+		var_dump($mail);
+		die();
 
 	}
 
@@ -195,8 +202,8 @@ class OrderController extends CI_Controller {
 					if($e == false){
 
 						$genreatePassword = $this->OuthModel->RandomPassword(8, true, false,true);
-						$mail=1;
-						//$mail = $this->SendMail(['templateName' => $post['CustomerName'],'templateEmail' => $post['Email'], 'templatePassword' => $genreatePassword, ]);
+						// $mail=1;
+						$mail = $this->SendMail(['templateName' => $post['CustomerName'],'templateEmail' => $post['Email'], 'templatePassword' => $genreatePassword, ]);
 						// mail function not local server
 						// please uncomment live run server 
 						if($mail == 1){
@@ -329,12 +336,12 @@ class OrderController extends CI_Controller {
 
 	public function SendMail($templatedata){
 
-		error_reporting(0);
+		// error_reporting(0);
 
  
-			$from_email = 'your@mail.com';
+			$from_email = 'travelcoderdude@mail.com';
 
-			$replyemail = 'your@mail.com';
+			$replyemail = 'travelcoderdude@mail.com';
 
 			$to_email= $templatedata['templateEmail'];
 

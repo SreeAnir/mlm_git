@@ -37,6 +37,10 @@
         <li class="<?php if($uri=='dashboard'){echo'active';}?>"><a href="<?=base_url('v3/dashboard');?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
         
        <?php if($this->session->userdata['Admin']['role'] == 'Admin'){?>
+        <li class="<?php if($uri=='profit-share-overview'){echo'active';}?>"><a href="<?=base_url('v3/profit-share-overview');?>">
+        <i class="fa fa-dashboard"></i> <span>Profit Share</span></a></li>
+
+        
         <li class="treeview <?php if($uri=='product-list'||$uri=='add-product'||$uri=='purchase-product'){ echo 'active';}?>">
           <a href="#">
             <i class="fa fa-table"></i> <span>Product</span>

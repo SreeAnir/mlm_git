@@ -30,10 +30,10 @@ class OveModel extends CI_Model {
 		
 		$config = Array(
 					'protocol' => 'smtp',
-					'smtp_host' => 'mail.yourhost.com',
+					'smtp_host' => 'smtp.gmail.com',
 					'smtp_port' => 587,
-					'smtp_user' => 'user@domain.com',
-					'smtp_pass' => 'password',
+					'smtp_user' => 'travelcoderdude@gmail.com',
+					'smtp_pass' => 'kottayam@123',
 					'mailtype' => 'text/html',
 					'newline' => '\r\n',
 					'charset' => 'utf-8'

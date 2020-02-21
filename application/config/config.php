@@ -910,7 +910,7 @@ $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 
 $config['csrf_exclude_uris'] = array('add_product','product-grid-data',
-'edit_product','add_order','order-grid-data','customer-grid-data','upload-profile','profile-password-update',
+'edit_product','add_order','order-grid-data', 'profit-share-grid-data','update-profit-clear','customer-grid-data','upload-profile','profile-password-update',
 'profile-details-update','add-purchase-product','edit-purchase-product','purchase-product-grid-data',
 'category-grid-data','add-category','edit-category','home/product_grid');
 
