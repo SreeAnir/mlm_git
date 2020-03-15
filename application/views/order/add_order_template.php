@@ -398,7 +398,7 @@
 
                       <label for="exampleInputPassword1">Email Address</label>
 
-                      <input type="email" class="form-control" required id="Email"  name="Email" placeholder="Enter Email Address">
+                      <input type="email" class="form-control" required id="Email"  name="Email" placeholder="Enter Mobile No.">
 
                       <p class="help-block"></p>
 
@@ -412,9 +412,9 @@
 
                      <div class="form-group">
 
-                      <label for="exampleInputPassword1">Pincode.</label>
+                      <label for="exampleInputPassword1">Pincode No.</label>
 
-                      <input type="number" class="form-control numcls" required id="Pincode" name="Pincode" placeholder="Enter Pincode.">
+                      <input type="number" class="form-control numcls" required id="Pincode" name="Pincode" placeholder="Enter Mobile No.">
 
                       <p class="help-block"></p>
 
