@@ -25,11 +25,18 @@ class OrderController extends CI_Controller {
 
 	{
 
-		
-
 		$data['products'] = $this->ProductModel->DropDownProducts();
 
   		$this->parser->parse('order/add_order_template',$data);
+
+	}
+	public function mailtest() 
+
+	{
+
+		$mail = $this->SendMail(['templateName' =>"Develeoper Sri",'templateEmail' => "sreekalaanirudhan1020@gmail.com", 'templatePassword' =>"hoihitestpassword", ]);
+		var_dump($mail);
+		die();
 
 	}
 
@@ -92,6 +99,72 @@ class OrderController extends CI_Controller {
 		$query = $this->OrderModel->manualOrder();
 
 	}
+	// public function success_order_view($order_id){
+	// 	$data = $this->OrderModel->SearchOrderByID($order_id);
+	// 	print_r($data);
+	// 	die
+	// 	// $this->parser->parse('order/add_order_template',$data);
+	// }
+
+	// [poCode]  ,   [user_name] ,  [product_id], [address] , sfkjsh kfhdskl , 9045 ,[pincode] , [is_igst] ,
+	// [qty] ,[user_id] , [unit_price]
+	
+	public function payment_process(){
+		
+		$post = $this->input->post();
+		//print_r($post );
+		// $obj->load->model('UserModel');
+
+	
+		$check_code =  $this->OrderModel->checkPoCode( $post ); 
+		if($check_code ==NULL){
+			$response = ['status' => 2 ,'message' => 'Invalid PO Code.Please re type your PO Code or  contact with customer care.'];
+			echo json_encode($response);
+			return ;
+		}
+		// else proceesd to order
+		$order_data = [ 	
+
+			'order_id' => '0'.$post['user_id'].time(),
+
+			'member_id' =>$post['user_id'] ,
+
+			'member_name' =>$post['user_name'] ,
+
+			'product_id' => $post['product_id'],
+
+			'qty' => $post['qty'],
+
+			'is_igst' => $post['is_igst'],
+
+			'unit_price' => $post['unit_price'],
+
+			'create_date' => date('Y-m-d H:i:s'),
+
+		 ];
+		 
+		 $query = $this->OrderModel->AddOrder($this->OuthModel->xss_clean($order_data));
+
+
+		 $response='';
+
+		 if($query == true){
+			$this->OrderModel->updatePOCode( $post ); 
+			 $response = ['status' => 1 ,'order_id_plain' => $order_data['order_id'] ,'order_id' =>$this->encrypt->encode($order_data['order_id'] ),
+			 'message' => '<span style="color:#090;">Order added Successfully !</span><p>Order Id : '.$order_data['order_id'].'</p>' ];
+		 }else{
+
+			 $response = ['status' => 0 ,'message' => '<span style="color:#900;">sorry we re having some technical problems. please try again !</span>' 						];
+
+		 }
+
+
+	echo json_encode($response);
+
+ 
+
+}
+
 	public function add_order(){
 
 		
@@ -193,8 +266,8 @@ class OrderController extends CI_Controller {
 					if($e == false){
 
 						$genreatePassword = $this->OuthModel->RandomPassword(8, true, false,true);
-						$mail=1;
-						//$mail = $this->SendMail(['templateName' => $post['CustomerName'],'templateEmail' => $post['Email'], 'templatePassword' => $genreatePassword, ]);
+						// $mail=1;
+						$mail = $this->SendMail(['templateName' => $post['CustomerName'],'templateEmail' => $post['Email'], 'templatePassword' => $genreatePassword, ]);
 						// mail function not local server
 						// please uncomment live run server 
 						if($mail == 1){
@@ -327,12 +400,12 @@ class OrderController extends CI_Controller {
 
 	public function SendMail($templatedata){
 
-		error_reporting(0);
+		// error_reporting(0);
 
  
-			$from_email = 'your@mail.com';
+			$from_email = 'travelcoderdude@mail.com';
 
-			$replyemail = 'your@mail.com';
+			$replyemail = 'travelcoderdude@mail.com';
 
 			$to_email= $templatedata['templateEmail'];
 

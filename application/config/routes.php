@@ -9,8 +9,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 */
 $route['default_controller'] = 'AdminLoginController';
+$route['home'] = 'HomeController/index';
+$route['home/product_grid'] = 'HomeController/product_grid';
+$route['view/(:any)/(:any?)'] = 'HomeController/view';
+$route['buy-now/(:any)/(:any?)'] = 'HomeController/buy_now';
+$route['orders-status/(:any?)'] = 'HomeController/user_order';
+$route['payment-confirmation/(:any)/(:any?)'] = 'HomeController/payment_confirmation';
+$route['update-address'] = 'HomeController/update_user_address';
+$route['process-payment'] = 'OrderController/payment_process';
+// $route['order_success/(:any)'] = 'OrderController/success_order_view';
+
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
 
 $route['authlogincheck'] = 'AdminLoginController/ovecab_seatsellers_authlogincheck';
 $route['admin-logout'] = 'AdminLoginController/seatsellers_logout';
@@ -24,6 +36,10 @@ $route['forgot-password'] = 'AdminLoginController/forgot_password_email';
 
 /////
 $route['v3/dashboard'] = 'DashboardController/index';
+$route['v3/profit-share-overview'] = 'DashboardController/profit_share_list';
+$route['profit-share-grid-data'] = 'DashboardController/profit_share_grid_data';
+$route['update-profit-clear'] = 'DashboardController/profit_share_update';
+// update-profit-clear?id=')'+id+ '&clear_status='
 
 $route['v3/add-product'] = 'ProductController/index';
 $route['add_product'] = 'ProductController/add_product';
@@ -38,12 +54,15 @@ $route['v3/manual-order'] = 'OrderController/manual_order';
 
 
 $route['v3/add-order'] = 'OrderController/index';
+$route['mailtest'] = 'OrderController/mailtest';
+
 $route['v3/order-list'] = 'OrderController/order_list_template';
 $route['get_product_detail'] = 'OrderController/get_product_detail';
 $route['get_member_detail'] = 'OrderController/get_member_details';
 $route['add_order'] = 'OrderController/add_order';
 $route['order-grid-data'] = 'OrderController/order_grid_data';
 $route['trash-order'] = 'OrderController/order_trash';
+
 
  
 

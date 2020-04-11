@@ -79,9 +79,9 @@ $db['default'] = array(
 
 	'username' => 'root',
 
-	'password' => '',
+	'password' => 'root',
 
-	'database' => 'mlm_git',
+	'database' => 'thefabonline_mlm',
 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 */
 
-$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/mlm_git';
+$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/mlm_server';
 
 
 
@@ -318,8 +318,7 @@ $config['composer_autoload'] = FALSE;
 
 */
 
-$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
-
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:\-\_\=+%\&';
 
 
 /*
@@ -650,7 +649,7 @@ $config['cache_query_string'] = FALSE;
 
 */
 
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'mlm';
 
 
 
@@ -838,6 +837,8 @@ $config['cookie_httponly'] 	= FALSE;
 
 */
 
+$config['currency'] = '$';
+
 $config['standardize_newlines'] = FALSE;
 
 
@@ -909,9 +910,9 @@ $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 
 $config['csrf_exclude_uris'] = array('add_product','product-grid-data',
-'edit_product','add_order','order-grid-data','customer-grid-data','upload-profile','profile-password-update',
+'edit_product','add_order','order-grid-data', 'profit-share-grid-data','update-profit-clear','customer-grid-data','upload-profile','profile-password-update',
 'profile-details-update','add-purchase-product','edit-purchase-product','purchase-product-grid-data',
-'category-grid-data','add-category','edit-category');
+'category-grid-data','add-category','edit-category','home/product_grid','update-address','process-payment');
 
 
 

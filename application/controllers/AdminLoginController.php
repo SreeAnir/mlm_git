@@ -17,6 +17,16 @@ class AdminLoginController extends CI_Controller {
 		$this->load->view('login/Login_template');
 
 	}
+public function confirm_page() 
+
+	{
+
+		$this->SessionModel->is_logged_in();
+
+		$this->load->view('login/Login_template');
+
+	}
+
 
 	public function last_logged($login_user_id){
 
@@ -32,10 +42,13 @@ class AdminLoginController extends CI_Controller {
 
 		//$this->OuthModel->CSRFVerify(); 
 
- 		
+		 //set redirection if required
+		 $redirect_url ="";
 
  		$post = $this->input->post();
-
+		if(isset($post['redirect_url'])){
+			$redirect_url = $post['redirect_url'] ;
+		}
   		$data = [
 
   					'username' => $post['username'],
@@ -95,9 +108,12 @@ class AdminLoginController extends CI_Controller {
 					
 
 					$this->session->set_userdata('Admin',$userdata);
-
-					redirect('v3/dashboard');
-
+					
+				//	redirect('v3/dashboard');
+				if($redirect_url != ''){
+					redirect(base_url().$redirect_url);	
+				}
+					redirect('home');
 					//$message = [ 'status' =>1 , 'message' => 'You are now successfully Login !', 'userDataDB' => $userdata, 'redirectUrl' => base_url('v3/dashboard') ];
 
 				}else{

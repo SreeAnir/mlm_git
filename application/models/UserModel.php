@@ -27,7 +27,15 @@ class UserModel extends CI_Model {
 		 } else {
 			 return false;
 		 }
-   	}
+	   }
+	   public function UpdateUserData($data,$user_id)
+	   {  
+			$res = $this->db->update($this->User, $data ,['id' => $user_id ] ); 
+		   if($res == 1)
+			   return true;
+		   else
+			   return false;
+		}
 	public function IfExistEmail($email){
 		 
 		 $this->db->select('id, name,email'); 

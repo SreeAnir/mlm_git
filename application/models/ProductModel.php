@@ -42,15 +42,56 @@ class ProductModel extends CI_Model {
  	}
   	public function DropDownProducts()
 	{  
- 		$this->db->select('id,ProductName,SalePrice');
+ 		$this->db->select('*');
 		$this->db->from($this->Product);
-   		$query = $this->db->get();
+   		$query = $this->db->get(); 
  		if ($query) {
 			 return $query->result_array();
 		 } else {
 			 return false;
 		 }
-   	}
+	   }
+	   
+	public function homeList($from=0,$searchData=array()){  
+		$currentPage=$from;
+		if($from > 0){
+		$from = (20 * ($from-1))+1 ;
+		}
+		if($currentPage == 0){
+			$currentPage=1;
+		}
+		$this->db->select('*');
+		$this->db->from($this->Product);
+		$this->db->limit(20 ,$from)->where('Available_qty >',0);
+		
+		
+		$return =array();
+		$return['products'] = array();
+		$return['products_count'] = 0;
+		if(count($searchData) > 0){
+			$this->db->where($searchData);
+		}
+		$query = $this->db->get();
+		if ($query) {
+			$return['products'] = $query->result_array() ;
+
+			$this->db->select('id');
+			if(count($searchData)>0){
+				$this->db->where($searchData);
+			}
+			$count=$this->db->from($this->Product)->where('Available_qty >',0)->count_all_results();
+			$return['products_count'] = ceil($count/20);
+			$return['products_total'] = $count;
+			$return['current_page'] = $currentPage ;
+			//   $query->result_array();
+		} else {
+			$return['products'] =array() ;
+			$return['products_count'] = 0;
+			$return['current_page'] = 0;
+		}
+		return $return;
+		}
+			
 	
 	public function PictureUrl()
 	{  
@@ -62,8 +103,7 @@ class ProductModel extends CI_Model {
 		$res = $query->row_array();
 		return $res['picture_url'];
    	}
-	
-	
+	 
 	
 	 public function GetProductById($id) 
 	{  

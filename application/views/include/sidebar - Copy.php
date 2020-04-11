@@ -37,10 +37,6 @@
         <li class="<?php if($uri=='dashboard'){echo'active';}?>"><a href="<?=base_url('v3/dashboard');?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
         
        <?php if($this->session->userdata['Admin']['role'] == 'Admin'){?>
-        <li class="<?php if($uri=='profit-share-overview'){echo'active';}?>"><a href="<?=base_url('v3/profit-share-overview');?>">
-        <i class="fa fa-dashboard"></i> <span>Profit Share</span></a></li>
-
-        
         <li class="treeview <?php if($uri=='product-list'||$uri=='add-product'||$uri=='purchase-product'){ echo 'active';}?>">
           <a href="#">
             <i class="fa fa-table"></i> <span>Product</span>
@@ -86,6 +82,25 @@
           </ul>
         </li>
         
+        <?php $invoiceuri=$this->uri->segment(3);?>
+        <!-- <li class="treeview <?php if($invoiceuri=='generate'||$invoiceuri=='search'||$invoiceuri=='print'){echo'active';}?>">
+          <a href="#">
+            <i class="fa fa-file-o"></i> <span>Invoice</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="<?php if($invoiceuri=='generate'){echo'active';}?>"><a href="<?=base_url('v3/invoice/generate');?>"><i class="fa fa-plus"></i> Generate Invoice</a></li>
+            <li class="<?php if($invoiceuri=='search'){echo'active';}?>"><a href="<?=base_url('v3/invoice/search');?>"><i class="fa fa-search"></i> Search Invoice </a></li>
+            <li class="<?php if($invoiceuri=='print'){echo'active';}?>"><a href="<?=base_url('v3/invoice/print');?>"><i class="fa fa-print"></i> Print Invoice</a></li>
+            
+          </ul>
+        </li>
+ 
+         -->
+         <li class="<?php if($invoiceuri=='settings'){echo'active';}?>"><a href="<?=base_url('v3/settings');?>"><i class="fa fa-gears"></i> <span>Settings</span></a></li>
+         
           <?php } ?>
           
            <?php if($this->session->userdata['Admin']['role'] == 'Customer'){

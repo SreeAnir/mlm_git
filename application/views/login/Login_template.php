@@ -62,7 +62,9 @@
 
   <div class="login-box-body">
 
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Sign in to start your session  OR 
+    <a href="<?=base_url();?>home">Back To Home</a>
+</p>
 
 
 
@@ -71,7 +73,12 @@
     <?php echo form_open('authlogincheck');?>
 
     
-
+  <?php 
+      if(isset($_GET['redirect_login_true'])){ ?> 
+               <input type="hidden" name="redirect_url" required class="form-control" value ="<?php echo $_GET['redirect_login_true'] ; ?>">
+          <?php     
+          }
+          ?>
       <div class="form-group has-feedback">
 
         <input type="email" name="username" required class="form-control" placeholder="Email">

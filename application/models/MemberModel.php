@@ -135,9 +135,7 @@ class MemberModel extends CI_Model {
 			$total_inr=[];
 
 			foreach($query->result_array() as $row){
-
-				$total_inr[]=$row['unit_price']*$row['qty'];			
-
+				$total_inr[]=(float)($row['unit_price'])*$row['qty'];			
 			}
 
  			$total_sale = array_sum($total_inr);

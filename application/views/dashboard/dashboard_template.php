@@ -184,11 +184,11 @@
 
             <div class="inner">
 
-              <h3><?=$purchase_products;?></h3>
+              <h3><?=number_format($profit_share_pending);?></h3>
 
 
 
-              <p>Purchase Products</p>
+              <p>Pending Fund Share</p>
 
             </div>
 
@@ -198,7 +198,7 @@
 
             </div>
 
-            <a href="<?=base_url('v3/purchase-product');?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?=base_url('v3/profit-share-overview');?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 
           </div>
 

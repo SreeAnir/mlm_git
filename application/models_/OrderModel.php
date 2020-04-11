@@ -13,8 +13,7 @@ class OrderModel extends CI_Model {
 	private $Member = 'member_log';
 	private $ProfitShare = 'profit_share';
 	private $Product = 'products';
-	private $PoCode = "pocode";
-	private $CompanyUserAdmin = 2;
+	private $CompanyUser = 2;
  	
 	public function AddOrder($data)
 	{  
@@ -24,34 +23,19 @@ class OrderModel extends CI_Model {
 			return true;
 		else
 			return false;
-	 }
-	 public function checkPoCode($data){
-		$this->db->select('*');
-		$this->db->from($this->PoCode);
-		$this->db->where("user_id",$data['user_id']);
-		$this->db->where("po_code",$data['poCode']);
-		$this->db->where("status",1);
-		$query = $this->db->get(); 
-		return ($query->row()) ;
-	 }
-	 public function updatePOCode($data){
-		$res = $this->db->update($this->PoCode, array("status" => 2) ,["user_id" =>$data['user_id'] ,"po_code" => $data['poCode'] ] ); 
-		return true;
-	 }
-	 
+ 	}
 	 public function manualOrder(){
 		$data=array();
-		print_r($_SESSION);
-		die();
-		// $data['order_id'] = '03451578720656' ;
-		// $data['member_id'] = 346 ;
-		// $data['member_name'] = 'Pintu' ;
-		// $data['product_id'] = '234260' ;
-		// $data['qty'] =1 ;
-		// $data['is_igst'] ='undefined' ;
-		// $data['unit_price'] =10000 ;
-		// $this->updateProfitForParents($data );
+		$data['order_id'] = '03451578720656' ;
+		$data['member_id'] = 346 ;
+		$data['member_name'] = 'Pintu' ;
+		$data['product_id'] = '234260' ;
+		$data['qty'] =1 ;
+		$data['is_igst'] ='undefined' ;
+		$data['unit_price'] =10000 ;
+		$this->updateProfitForParents($data );
 	 }
+	 public AddOrderUser
 	 public function getProductProfit($data){
 		$product_id =  $data['product_id'] ;
 		$qty = $data['qty'];
@@ -62,6 +46,7 @@ class OrderModel extends CI_Model {
 
 		$this->db->where("id",$product_id);
 		$query = $this->db->get(); 
+
 		if ($query->num_rows() > 0) {
 			$Price = $query->row()->Price;
 			$SalePrice = $query->row()->SalePrice;
@@ -78,7 +63,6 @@ class OrderModel extends CI_Model {
 		$find_my_parent= $data['member_id'] ;
 		$order_id =   $data['order_id'] ;
 		$product_id =  $data['product_id'] ;
-		
 		$profit_total = $this->getProductProfit($data); 
 		$levels=1  ;
 		while( $levels <= 8 ){
@@ -87,17 +71,12 @@ class OrderModel extends CI_Model {
 			$find_my_parent = $this->getHigherLevel($find_my_parent) ;
 			//ProfitShare , insert data 
 				if( $find_my_parent == 0 ){
-					$find_my_parent= $this->CompanyUserAdmin;
-
+					$find_my_parent= $this->CompanyUser;
 				}
 				$data_profit = array();
 				$data_profit['order_id'] = $order_id ;
 				$data_profit['member_id'] = $member_id ;
 				$data_profit['parent_id'] = $find_my_parent ;
-				$data_profit['clear_status'] = 0;	
-				if($this->CompanyUserAdmin ==  $find_my_parent  ){
-					$data_profit['clear_status'] = 1;	
-				}
 				
 				if($levels==1){
 					$profit_percentage=35;
