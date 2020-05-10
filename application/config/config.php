@@ -908,11 +908,12 @@ $config['csrf_cookie_name'] = 'c_ovecabs';
 $config['csrf_expire'] = 7200;
 
 $config['csrf_regenerate'] = TRUE;
-
+//// add csrf exclude
 $config['csrf_exclude_uris'] = array('add_product','product-grid-data',
 'edit_product','add_order','order-grid-data', 'profit-share-grid-data','update-profit-clear','customer-grid-data','upload-profile','profile-password-update',
 'profile-details-update','add-purchase-product','edit-purchase-product','purchase-product-grid-data',
-'category-grid-data','add-category','edit-category','home/product_grid','update-address','process-payment');
+'category-grid-data','add-category','edit-category','home/product_grid','update-address','process-payment','new-registration','pocode-grid-data',
+'member-post-po');
 
 
 
@@ -1047,4 +1048,3 @@ $config['rewrite_short_tags'] = FALSE;
 */
 
 $config['proxy_ips'] = '';
-

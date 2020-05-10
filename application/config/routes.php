@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | URI ROUTING
 | -------------------------------------------------------------------------
 |
- 
+
 */
 $route['default_controller'] = 'AdminLoginController';
 $route['home'] = 'HomeController/index';
@@ -32,11 +32,19 @@ $route['profile-password-update'] = 'AdminLoginController/change_user_profile_pa
 $route['profile-details-update'] = 'AdminLoginController/user_update_profile_data';
 $route['i-forgot-my-password'] = 'AdminLoginController/forgot_password';
 $route['forgot-password'] = 'AdminLoginController/forgot_password_email';
- 
+$route['register'] = 'AdminLoginController/register_user';
+$route['new-registration'] = 'AdminLoginController/newUserRegisterSave';
+
+
+
 
 /////
 $route['v3/dashboard'] = 'DashboardController/index';
 $route['v3/profit-share-overview'] = 'DashboardController/profit_share_list';
+$route['v3/order-po-code'] = 'DashboardController/order_po_code';
+$route['pocode-grid-data'] = 'DashboardController/pocode_grid_data';
+$route['member-post-po'] = 'DashboardController/member_post_po';
+
 $route['profit-share-grid-data'] = 'DashboardController/profit_share_grid_data';
 $route['update-profit-clear'] = 'DashboardController/profit_share_update';
 // update-profit-clear?id=')'+id+ '&clear_status='
@@ -64,7 +72,7 @@ $route['order-grid-data'] = 'OrderController/order_grid_data';
 $route['trash-order'] = 'OrderController/order_trash';
 
 
- 
+
 
 
 
@@ -76,7 +84,9 @@ $route['trash-member'] = 'CustomerController/trash';
 
 
 
- 
+
+$route['v3/member-order-view'] = 'OrderController/member_list_template';
+
 $route['v3/member-net-sale-view'] = 'Member/view_member_template';
 $route['v3/member-net-sale-view-chart'] = 'Member/login_customer_view';
 
@@ -115,14 +125,3 @@ $route['trash-category'] = 'CategoryController/category_trash';
 
 $route['v3/settings'] = 'SettingsController/index';
 $route['settings-update-tax'] = 'SettingsController/update_tax';
-
-
-
-
-
-
- 
- 
-
-
-

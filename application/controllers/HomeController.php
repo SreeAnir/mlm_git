@@ -162,44 +162,44 @@ public function update_user_address(){
 				redirect(base_url()."?session+false&redirect_login_true=payment-confirmation/".$product_id_enc.'/'.$quantity );
 			}
 
-			$order_data = [ 	
+		// 	$order_data = [ 	
 
-				'order_id' => '0'.$user['id'].time(),
+		// 		'order_id' => '0'.$user['id'].time(),
 
-				'member_id' => $user['id'] ,
+		// 		'member_id' => $user['id'] ,
 
-				'member_name' => $user['first_name'] ,
+		// 		'member_name' => $user['first_name'] ,
 
-				'qty' => 1 ,
+		// 		'qty' => 1 ,
 
-				'product_id' => $product_id ,
+		// 		'product_id' => $product_id ,
 
-				'is_igst' => 0 ,
+		// 		'is_igst' => 0 ,
 
-				'unit_price' => $product['SalePrice'],
+		// 		'unit_price' => $product['SalePrice'],
 			
-				'create_date' => date('Y-m-d H:i:s'),
+		// 		'create_date' => date('Y-m-d H:i:s'),
 
-			];
+		// 	];
 
 
-		$query = $this->OrderModel->AddOrder($this->OuthModel->xss_clean($order_data));
+		// $query = $this->OrderModel->AddOrder($this->OuthModel->xss_clean($order_data));
 
-		$response='';
+		// $response='';
 
-		if($query == true){
-		$param=$order_data['order_id'];
-		$response = ['status' => 1 ,'message' => $order_data['order_id'] ,'order_data' => $order_data];
+		// if($query == true){
+		// $param=$order_data['order_id'];
+		// $response = ['status' => 1 ,'message' => $order_data['order_id'] ,'order_data' => $order_data];
 
-		}else{
+		// }else{
 
-		$response = ['status' => 0 ,'message' =>"",'order_data' => $order_data];
-		$param='failed';
-		}
-		$this->session->set_flashdata('order_status', $response);
+		// $response = ['status' => 0 ,'message' =>"",'order_data' => $order_data];
+		// $param='failed';
+		// }
+		// $this->session->set_flashdata('order_status', $response);
 
-		redirect(base_url()."orders-status/".$this->encrypt->encode($param) );
-}
+		redirect(base_url()."payment-confirmation/".$product_id_enc.'/'.$quantity );
+	}
 	public function product_grid(){
 		$from=0;
 		$searchData=array();

@@ -8,7 +8,7 @@
     width: 120px;
 }
 </style>
-
+  
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -20,7 +20,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Profit Share
+        PO Code
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
@@ -37,9 +37,7 @@
               <h3 class="box-title">&nbsp;</h3>
               <div id="message-alert" ></div>
               <!-- <div class="alert"> Show Pending Profit Fund <input ></div> -->
-            <div ><label for=""> Fund Status</label> <select> <option value=""> ALL </option>
-            <option value="1"> Cleared </option>
-          <option value="0"> Pending </option> </select> </div>
+               
             </div>
             <!-- /.box-header -->
 
@@ -48,28 +46,19 @@
                 <thead>
                 <tr>
                   <th>Order No.</th>
-                  <th>Product Name/ID</th>
+                  <th>PO Code</th>
                   <th>Member Name</th>
-                  <th>Profit Price (Rs)</th>
-                  <th>Profit(%)</th>
-                  <th>Cleared</th>
-                  <th>Created</th>
-                  <th>Actions</th>
+                 
                 </tr>
                 </thead>
                 <tbody>
-
+                  
                 </tbody>
                 <tfoot>
                 <tr>
-                   <th>Order No.</th>
-                  <th>Product Name/ID</th>
+                <th>Order No.</th>
+                  <th>PO Code</th>
                   <th>Member Name</th>
-                  <th>Profit Price (Rs)</th>
-                  <th>Profit(%)</th>
-                  <th>Cleared</th>
-                  <th>Created</th>
-                  <th>Actions</th>
                 </tr>
                 </tfoot>
               </table>
@@ -85,13 +74,13 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-
-
+  
+  
+ 
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-lg">
-
+    
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -99,7 +88,7 @@
           <h4 class="modal-title">Order-Deatils</h4>
         </div>
         <div class="modal-body">
-
+          
                 <div id="tableData">
                     <div class="progress">
                      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
@@ -107,21 +96,21 @@
                         </div>
                       </div>
                 </div>
-
-
-
+          
+          
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-
+      
     </div>
   </div>
-  <!-- Modal -->
+  <!-- Modal --> 
   <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
-
+    
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -141,10 +130,10 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-
+      
     </div>
   </div>
-
+  
 <?php $this->load->view('include/footer');?>
 <script src="<?=base_url('public');?>/loadingoverlap/loadingoverlay.min.js"></script>
 <script src="<?=base_url('public');?>/loadingoverlap/loadingoverlay_progress.min.js"></script>
@@ -155,23 +144,23 @@
   $(function () {
      $('#example1').DataTable({
 	 					"processing": true,
-						"serverSide": true,
+						"serverSide": true, 
 						"ajax":{
-							url :"<?=base_url('profit-share-grid-data')?>",
-							type: "post",
+							url :"<?=base_url('pocode-grid-data')?>", 
+							type: "post",  
 							headers: {  'Authkey': '<?=$this->security->get_csrf_hash();?>'},
-							error: function(){
+							error: function(){  
 								$(".contacts-grid-error").html("");
 								$("#contacts-grid").append('<tbody class="contacts-grid-error"><tr><th align="center" colspan="5">No data found in the server</th></tr></tbody>');
 								$("#contacts-grid_processing").css("display","none");
-							}
+							} 
 						},
 	 });
   });
-
+  
  function view(id){
 	$('#myModal').modal({ backdrop: 'static' });
-
+	
 			$.ajax({
 					headers: {  'Authkey': '<?=$this->security->get_csrf_hash();?>'},
   					url: '<?=base_url('fleet-details?id=');?>'+id,
@@ -179,7 +168,7 @@
 							{
  								if(data.code == 400)
 								{
- 									$('#tableData').html(data.error);
+ 									$('#tableData').html(data.error);  
  								}else{
 									$('#tableData').html(data);
 								}
@@ -187,12 +176,12 @@
 					  error: function (jqXHR, status, err) {
 						  $('#tableData').html("Local error callback. Please try again !");
  					  }
-
+				
 					});
 }
 function ViewDoc(fleet_Id,document_name,documentUrl){
 	//alert(document_name+fleet_Id+documentUrl);
-
+	
 	$('#document_name').html(document_name);
 	$('#myModal2').modal({ backdrop: 'static' });
 	if(documentUrl != ''){
@@ -202,7 +191,7 @@ function ViewDoc(fleet_Id,document_name,documentUrl){
 				{
 					if(data.code == 400)
 					{
-						$('#tableDataDocument').html(data.error);
+						$('#tableDataDocument').html(data.error);  
 					}else{
 						$('#tableDataDocument').html(data);
 					}
@@ -210,7 +199,7 @@ function ViewDoc(fleet_Id,document_name,documentUrl){
 				error: function (jqXHR, status, err) {
 					$('#tableDataDocument').html("Local error callback. Please try again !");
 				}
-
+					
 		});
 	}else{
 		$('#tableDataDocument').html("<b>No Doucment Uploaded !</b>");
@@ -254,8 +243,8 @@ $(document).ready(function(){
      let status_change =0 ;
      let id=  $(this).attr('data-attr');
     if($(this).is(':checked')){
-      status_change = 1;
-    }
+      status_change = 1; 
+    } 
     $('#message-alert').html('');
 			$.ajax({
           headers: {  'Authkey': '<?=$this->security->get_csrf_hash();?>'},
@@ -263,18 +252,18 @@ $(document).ready(function(){
           data : {  id :id , clear_status :  status_change} ,
   					url: '<?=base_url('update-profit-clear');?>',
 							success:function(data)
-              {
+              { 
                 data= ( JSON.parse( data) );
-                $('#message-alert').html('<div class="alert alert-info">' + data.message+'</div>');
+                $('#message-alert').html('<div class="alert alert-info">' + data.message+'</div>'); 
  					   },
 					  error: function (jqXHR, status, err) {
 						  $('#tableData').html("Local error callback. Please try again !");
  					  }
-
+				
 					});
    });
 });
 </script>
-
+ 
 </body>
 </html>

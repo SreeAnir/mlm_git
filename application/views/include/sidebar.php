@@ -40,6 +40,9 @@
         <li class="<?php if($uri=='profit-share-overview'){echo'active';}?>"><a href="<?=base_url('v3/profit-share-overview');?>">
         <i class="fa fa-dashboard"></i> <span>Profit Share</span></a></li>
 
+        <li class="<?php if($uri=='order-po-code'){echo'active';}?>"><a href="<?=base_url('v3/order-po-code');?>">
+        <i class="fa fa-dashboard"></i> <span>PO Code</span></a></li>
+
         
         <li class="treeview <?php if($uri=='product-list'||$uri=='add-product'||$uri=='purchase-product'){ echo 'active';}?>">
           <a href="#">

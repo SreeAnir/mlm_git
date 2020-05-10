@@ -12,7 +12,7 @@
 
     </div>
 
- 
+
 
      <strong>  Copyright © MLM Pvt. Ltd. 2018 <!--Powered by--></strong>
 
@@ -24,9 +24,9 @@
 
   </footer>
 
-  
 
-  
+
+
 
     <!-- Control Sidebar -->
 
@@ -42,15 +42,15 @@
 
 <!-- ./wrapper -->
 
-  
 
-  
 
-  
 
-  
 
-  
+
+
+
+
+
 
   <!-- jQuery 3 -->
 
@@ -86,7 +86,7 @@
     $('#buyNNow').click(function(){
        let quanity_choosen = $('#quanity_choosen').val();
        let link_redirect =  $(this).attr('data-rel')+"/"+quanity_choosen;
-       window.location = link_redirect ;  
+       window.location = link_redirect ;
     });
     $('#edit-address').click(function(){
       $('#edit-address,#check-payment').hide();
@@ -136,7 +136,7 @@
       user_id= $('#user_id').val();
 
       user_name= $('#user_name').val();
-       
+
       qty= $('#qty').val();
 
       is_igst= $('#is_igst').val();
@@ -177,12 +177,12 @@
             }
             if(response.status == 0){
               alert("Failed to Order your Item");
-              // window.location=BASE_URL+"order_failed/response.order_id"
+               window.location=BASE_URL+"order_failed/"+response.order_id
             }
-            
+
           }
         });
-          
+
 
       $('.save-address-buttons').fadeOut();
     });
@@ -191,7 +191,7 @@
       $('#edit-address').fadeIn();
       $('.save-address-buttons').fadeOut();
     });
-    
+
 
     $('.sidebar-menu').tree()
 

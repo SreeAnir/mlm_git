@@ -20,8 +20,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Profit Share
-        <small>Control panel</small>
+        User's Order
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?=base_url('v3/dashboard');?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -30,19 +29,26 @@
     </section>
     <!-- Main content -->
      	<section class="content">
+        <div class="row">
+          <div class="col-xs-12 po-class">
+             <!-- <input type="text" value=""> -->
+              <div class="box">
+               <div class="box-header">
+                 <p>Generate PO Code for New order.User will recieve a Code that will  be used for new order placement.</p>
+                 <input type="hidden" value="<?php echo $user_id; ?>" id="user_id"/>
+                 <input onclick="generatePO()"  class="btn btn-sm btn-primary" type="button" value="Generate PO Code" >
+               </div>
+                  </div>
+                </div>
+        </div>
       <div class="row">
         <div class="col-xs-12">
            <div class="box">
             <div class="box-header">
               <h3 class="box-title">&nbsp;</h3>
-              <div id="message-alert" ></div>
-              <!-- <div class="alert"> Show Pending Profit Fund <input ></div> -->
-            <div ><label for=""> Fund Status</label> <select> <option value=""> ALL </option>
-            <option value="1"> Cleared </option>
-          <option value="0"> Pending </option> </select> </div>
+
             </div>
             <!-- /.box-header -->
-
             <div class="box-body" id="element_overlapT">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -50,9 +56,9 @@
                   <th>Order No.</th>
                   <th>Product Name/ID</th>
                   <th>Member Name</th>
-                  <th>Profit Price (Rs)</th>
-                  <th>Profit(%)</th>
-                  <th>Cleared</th>
+                  <th>QTY</th>
+                  <th>Unit Price</th>
+                  <th>Status</th>
                   <th>Created</th>
                   <th>Actions</th>
                 </tr>
@@ -65,9 +71,9 @@
                    <th>Order No.</th>
                   <th>Product Name/ID</th>
                   <th>Member Name</th>
-                  <th>Profit Price (Rs)</th>
-                  <th>Profit(%)</th>
-                  <th>Cleared</th>
+                   <th>QTY</th>
+                  <th>Unit Price</th>
+                  <th>Status</th>
                   <th>Created</th>
                   <th>Actions</th>
                 </tr>
@@ -146,19 +152,67 @@
   </div>
 
 <?php $this->load->view('include/footer');?>
+
 <script src="<?=base_url('public');?>/loadingoverlap/loadingoverlay.min.js"></script>
 <script src="<?=base_url('public');?>/loadingoverlap/loadingoverlay_progress.min.js"></script>
 
 <script src="<?=base_url('public');?>/components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?=base_url('public');?>/components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script>
+  function pocode_string(user_id){
+    var numbers = "0123456789";
+    var chars = "acdefhiklmnoqrstuvwxyz";
+    var string_length = 3;
+    var randomstring = '';
+    var randomstring2 = '';
+    for (var x = 0; x < string_length; x++) {
+     var letterOrNumber = Math.floor(Math.random() * 2);
+     var rnum = Math.floor(Math.random() * chars.length);
+     randomstring += chars.substring(rnum, rnum + 1);
+    }
+    for (var y = 0; y < string_length; y++) {
+     var letterOrNumber2 = Math.floor(Math.random() * 2);
+     var rnum2 = Math.floor(Math.random() * numbers.length);
+     randomstring2 += numbers.substring(rnum2, rnum2 + 1);
+    }
+    var code = ( user_id+randomstring + randomstring2).substring(0, 6);
+    return code;
+  }
+   function generatePO(){
+      var conf;
+      var r = confirm("This will generate PO code for User.Click OK to proceed");
+      var po_code =pocode_string(user_id);
+      var user_id =$('#user_id').val();
+      var dataJson = {
+          user_id : user_id ,
+          po_code : po_code ,
+        };
+      if (r == true) {
+        $.ajax("<?=base_url('member-post-po')?>",
+            {
+                dataType: 'json', // type of response data
+                timeout: 500,     // timeout milliseconds
+                data:dataJson ,
+                success: function (data,status,xhr) {   // success callback function
+
+                },
+                error: function (jqXhr, textStatus, errorMessage) { // error callback
+
+                }
+            });
+
+      } else {
+       return false ;
+      }
+  }
   $(function () {
      $('#example1').DataTable({
 	 					"processing": true,
 						"serverSide": true,
 						"ajax":{
-							url :"<?=base_url('profit-share-grid-data')?>",
+							url :"<?=base_url('order-grid-data')?>",
 							type: "post",
+              data: {user_id:<?php echo $user_id ?>},
 							headers: {  'Authkey': '<?=$this->security->get_csrf_hash();?>'},
 							error: function(){
 								$(".contacts-grid-error").html("");
@@ -248,32 +302,7 @@ function trash(id){
  					});
 }
 
-$(document).ready(function(){
-  $('#message-alert').html('');
-   $(document).on("change",".profile_share_change",function() {
-     let status_change =0 ;
-     let id=  $(this).attr('data-attr');
-    if($(this).is(':checked')){
-      status_change = 1;
-    }
-    $('#message-alert').html('');
-			$.ajax({
-          headers: {  'Authkey': '<?=$this->security->get_csrf_hash();?>'},
-          type : 'post',
-          data : {  id :id , clear_status :  status_change} ,
-  					url: '<?=base_url('update-profit-clear');?>',
-							success:function(data)
-              {
-                data= ( JSON.parse( data) );
-                $('#message-alert').html('<div class="alert alert-info">' + data.message+'</div>');
- 					   },
-					  error: function (jqXHR, status, err) {
-						  $('#tableData').html("Local error callback. Please try again !");
- 					  }
 
-					});
-   });
-});
 </script>
 
 </body>

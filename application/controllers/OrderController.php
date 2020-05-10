@@ -12,16 +12,18 @@ class OrderController extends CI_Controller {
 
                 parent::__construct();
 
-				$this->load->model(['OrderModel','ProductModel','MemberModel']);
+      				$this->load->model(['OrderModel','ProductModel','MemberModel']);
+              $this->SessionModel->not_logged_in();
 
-                $this->SessionModel->not_logged_in();
-				$this->SessionModel->is_logged_Admin();
-
+              $excluded = array('payment_process');
+                if (!in_array($this->router->method, $excluded)){
+                  $this->SessionModel->is_logged_Admin();
+              }
         }
 
-	
 
-	public function index() 
+
+	public function index()
 
 	{
 
@@ -30,7 +32,7 @@ class OrderController extends CI_Controller {
   		$this->parser->parse('order/add_order_template',$data);
 
 	}
-	public function mailtest() 
+	public function mailtest()
 
 	{
 
@@ -40,7 +42,7 @@ class OrderController extends CI_Controller {
 
 	}
 
-	public function order_list_template() 
+	public function order_list_template()
 
 	{
 
@@ -48,15 +50,24 @@ class OrderController extends CI_Controller {
 
 	}
 
-	
+	public function member_list_template()
+
+	{
+      $data = array();
+      $data['user_id'] =$_REQUEST['id'];
+  		$this->parser->parse('order/member_order_view',$data);
+
+	}
+
+
 
 	public function get_product_detail(){
 
-		
+
 
 		$res = $this->ProductModel->GetProductById($this->input->get('id'));
 
- 		
+
 
 		if($res != false){
 
@@ -72,11 +83,11 @@ class OrderController extends CI_Controller {
 
 	}
 
-	
+
 
 	public function get_member_details(){
 
-		
+
 
 		$res = $this->UserModel->GetUserDataById($this->input->get('id'));
 
@@ -94,7 +105,7 @@ class OrderController extends CI_Controller {
 
 	}
 
-	
+
 	public function manual_order(){
 		$query = $this->OrderModel->manualOrder();
 
@@ -108,22 +119,22 @@ class OrderController extends CI_Controller {
 
 	// [poCode]  ,   [user_name] ,  [product_id], [address] , sfkjsh kfhdskl , 9045 ,[pincode] , [is_igst] ,
 	// [qty] ,[user_id] , [unit_price]
-	
+
 	public function payment_process(){
-		
+
 		$post = $this->input->post();
 		//print_r($post );
 		// $obj->load->model('UserModel');
 
-	
-		$check_code =  $this->OrderModel->checkPoCode( $post ); 
+
+		$check_code =  $this->OrderModel->checkPoCode( $post );
 		if($check_code ==NULL){
 			$response = ['status' => 2 ,'message' => 'Invalid PO Code.Please re type your PO Code or  contact with customer care.'];
 			echo json_encode($response);
 			return ;
 		}
 		// else proceesd to order
-		$order_data = [ 	
+		$order_data = [
 
 			'order_id' => '0'.$post['user_id'].time(),
 
@@ -142,14 +153,14 @@ class OrderController extends CI_Controller {
 			'create_date' => date('Y-m-d H:i:s'),
 
 		 ];
-		 
+
 		 $query = $this->OrderModel->AddOrder($this->OuthModel->xss_clean($order_data));
 
 
 		 $response='';
 
 		 if($query == true){
-			$this->OrderModel->updatePOCode( $post ); 
+			$this->OrderModel->updatePOCode( $post );
 			 $response = ['status' => 1 ,'order_id_plain' => $order_data['order_id'] ,'order_id' =>$this->encrypt->encode($order_data['order_id'] ),
 			 'message' => '<span style="color:#090;">Order added Successfully !</span><p>Order Id : '.$order_data['order_id'].'</p>' ];
 		 }else{
@@ -161,17 +172,17 @@ class OrderController extends CI_Controller {
 
 	echo json_encode($response);
 
- 
+
 
 }
 
 	public function add_order(){
 
-		
+
 
 		$this->OuthModel->CSRFVerify();
 
-		
+
 
  		$this->form_validation->set_rules('product_name', 'Product Name', 'required');
 
@@ -185,9 +196,9 @@ class OrderController extends CI_Controller {
 
 		$this->form_validation->set_rules('Address', 'Address', 'required');
 
-		
 
-  		
+
+
 
 		 if ($this->form_validation->run() == FALSE)
 
@@ -195,17 +206,17 @@ class OrderController extends CI_Controller {
 
  			 $response = ['status' => 0 ,'message' => '<span style="color:#900;">'.validation_errors().'</span>' ];
 
-			  
+
 
          }else{
 
-			 
+
 
 				$post = $this->input->post();
 
 				$profile_url='';
 
-				if(isset($_FILES['photo']['name']) && !empty($_FILES['photo']['name'])){	
+				if(isset($_FILES['photo']['name']) && !empty($_FILES['photo']['name'])){
 
 
 
@@ -245,21 +256,21 @@ class OrderController extends CI_Controller {
 
 				}
 
-				
 
-				
 
-				 
+
+
+
 
 				$member_id = $post['id'];
 
-				
 
-					
+
+
 
 				if(empty($member_id)){
 
-					
+
 
 					$e = $this->UserModel->IfExistEmail($post['Email']);
 
@@ -269,16 +280,18 @@ class OrderController extends CI_Controller {
 						// $mail=1;
 						$mail = $this->SendMail(['templateName' => $post['CustomerName'],'templateEmail' => $post['Email'], 'templatePassword' => $genreatePassword, ]);
 						// mail function not local server
-						// please uncomment live run server 
+						// please uncomment live run server
+						/////
+						$mail =1 ;
 						if($mail == 1){
 
-						
 
-							
 
-							
 
-								$member_data = [ 	
+
+
+
+								$member_data = [
 
 											'name' => $post['CustomerName'],
 
@@ -292,7 +305,7 @@ class OrderController extends CI_Controller {
 
 											'mobile_no' => $post['Mobile'],
 
-											'pincode' => $post['Pincode'], 
+											'pincode' => $post['Pincode'],
 
 											'address' => $post['Address'],
 
@@ -312,9 +325,9 @@ class OrderController extends CI_Controller {
 
 							$member_id=$create_member;
 
-							
 
-							$this->MemberModel->AddMemberLog( ['id'=> $member_id, 'name' => $post['CustomerName'], 'parent_id' => $post['ReferenceMemberId'] ]); 
+
+							$this->MemberModel->AddMemberLog( ['id'=> $member_id, 'name' => $post['CustomerName'], 'parent_id' => $post['ReferenceMemberId'] ]);
 
 							}else{
 
@@ -330,7 +343,7 @@ class OrderController extends CI_Controller {
 
 						}
 
-						
+
 
 					}else{
 
@@ -340,13 +353,13 @@ class OrderController extends CI_Controller {
 
 					}
 
-					 
+
 
 				}
 
-				
 
- 				$order_data = [ 	
+
+ 				$order_data = [
 
 									'order_id' => '0'.$member_id.time(),
 
@@ -359,18 +372,18 @@ class OrderController extends CI_Controller {
 									'qty' => $post['qty'],
 									'is_igst' => $post['is_igst'],
 									'unit_price' => $post['price'],
-								
+
  									'create_date' => date('Y-m-d H:i:s'),
 
  								];
 
-				
 
- 				 
+
+
 
  				$query = $this->OrderModel->AddOrder($this->OuthModel->xss_clean($order_data));
 
-				 
+
 
 				$response='';
 
@@ -386,23 +399,23 @@ class OrderController extends CI_Controller {
 
            }
 
-		   
+
 
 		   echo json_encode($response);
 
-		
+
 
  	}
 
-	
 
-	
+
+
 
 	public function SendMail($templatedata){
 
 		// error_reporting(0);
 
- 
+
 			$from_email = 'travelcoderdude@mail.com';
 
 			$replyemail = 'travelcoderdude@mail.com';
@@ -411,7 +424,7 @@ class OrderController extends CI_Controller {
 
 			$subject= 'Admin MLM Membership Login Details';
 
-  
+
 
 			$this->OveModel->SMTP_Config(); //
 
@@ -431,17 +444,17 @@ class OrderController extends CI_Controller {
 
   			return $this->email->send();
 
-	
+
 
 	}
 
-	
 
-	
 
-	
 
-	
+
+
+
+
 
 	public function order_grid_data()
 
@@ -449,13 +462,11 @@ class OrderController extends CI_Controller {
 
 		$this->OuthModel->CSRFVerify();
 
- 		// storing  request (ie, get/post) global array to a variable  
+ 		// storing  request (ie, get/post) global array to a variable
 
 		$requestData = $_REQUEST;
 
- 		//print_r($requestData);
 
- 
 
   		$table = "orders";
 
@@ -464,6 +475,8 @@ class OrderController extends CI_Controller {
  		$id = '';
 
 		$where = " ";
+
+    $whereSql=0;
 
  		$sql = "SELECT ".$fields;
 
@@ -479,7 +492,7 @@ class OrderController extends CI_Controller {
 
 		$totalFiltered = $totalData; // rules datatable
 
-  		
+
 
 		$where = " ";
 
@@ -487,19 +500,19 @@ class OrderController extends CI_Controller {
 
  		$sql.=" FROM ".$table . $where ;
 
- 		
 
-  		
+
+
 
 		if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-			
+      $whereSql=1;
 
 			$searchValue = $requestData['search']['value'];
 
- 				
 
-			$sql.=" WHERE `order_id` LIKE '%".$searchValue."%' ";   
+
+			$sql.=" WHERE `order_id` LIKE '%".$searchValue."%' ";
 
  			$sql.=" OR `product_id` LIKE '%".$searchValue."%' ";
 
@@ -508,16 +521,25 @@ class OrderController extends CI_Controller {
   			$sql.=" OR `unit_price` LIKE '%".$searchValue."%' ";
 
 		}
+    // var_dump($requestData);die();
+    if( !empty($requestData['user_id']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
- 		
+      $searchValue = $requestData['user_id'];
+      if($whereSql==1){
+          $sql.=" OR `member_id` =".$searchValue;
+      }else{
+          $sql.=" where `member_id` =".$searchValue;
+      }
 
-		
+
+    }
+// echo $sql; die();
 
  		$query = $this->db->query($sql);
 
  		$totalFiltered = $query->num_rows(); // rules datatable
 
- 		//ORDER BY id DESC	
+ 		//ORDER BY id DESC
 
  		$sql.=" ORDER BY create_date DESC  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
@@ -527,23 +549,23 @@ class OrderController extends CI_Controller {
 
  		$SearchResults = $query->result();
 
-		
+
 
   		$data = array();
 
 		foreach($SearchResults as $row){
 
-			$nestedData=array(); 
+			$nestedData=array();
 
-			
+
 
 			$id = $row->id;
 
-			
+
 
 			$url_id=$this->OuthModel->Encryptor('encrypt',$row->order_id);
 
-			
+
 
 			$tableCheckTD = "<label class='pos-rel'><input type='checkbox' class='ace' /><span class='lbl'></span></label>";
  			$action =  '<div class="action-buttons"><a target="_blank" href="'.base_url('v3/invoice/print-view?id='.$url_id).'" class="green">
@@ -551,7 +573,7 @@ class OrderController extends CI_Controller {
 																</a>&nbsp;&nbsp;&nbsp;
  				<a onclick="trash('.$id.')"  class="red trashID" href="javascript:void(0);">
 																	<i class="ace-icon fa fa-trash bigger-130"></i>
-																</a>												
+																</a>
  															</div>';
 
  			/*<a onclick="trash('.$id.')"  class="red trashID" href="javascript:void(0);">
@@ -576,7 +598,7 @@ class OrderController extends CI_Controller {
 
 			$nestedData[] = $row->create_date;
 
-			$nestedData[] =  $action; 
+			$nestedData[] =  $action;
 
   			$data[] = $nestedData;
 
@@ -584,27 +606,27 @@ class OrderController extends CI_Controller {
 
  		$json_data = array(
 
-					"draw"            => intval( $requestData['draw'] ),  
+					"draw"            => intval( $requestData['draw'] ),
 
 					"recordsTotal"    => intval( $totalData ),  // total number of records
 
-					"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching,  
+					"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching,
 
 					"data"            => $data   // total data array
 
 					);
 
- 		echo json_encode($json_data);  // send data as json format					
+ 		echo json_encode($json_data);  // send data as json format
 
-				
+
 
 	}
 
-	
 
-	public function product_view(){ 
 
-		
+	public function product_view(){
+
+
 
 		$id=$this->OuthModel->Encryptor('decrypt',$this->input->get('id'));
 
@@ -612,7 +634,7 @@ class OrderController extends CI_Controller {
 
 		$data['product'] = $this->ProductModel->GetProductById($id);
 
-		
+
 
 		$this->parser->parse('product/edit_product_template',$data);
 
@@ -622,7 +644,7 @@ class OrderController extends CI_Controller {
 
 		$this->OuthModel->CSRFVerify();
 
-		
+
 
  		//$this->form_validation->set_rules('product_Id', 'product id', 'required');
 
@@ -632,11 +654,11 @@ class OrderController extends CI_Controller {
 
 		$this->form_validation->set_rules('SalePrice', 'Sale Price', 'required');
 
- 
 
- 		
 
- 		
+
+
+
 
 		 if ($this->form_validation->run() == FALSE)
 
@@ -644,21 +666,21 @@ class OrderController extends CI_Controller {
 
  			 $response = ['status' => 0 ,'message' => '<span style="color:#900;">'.validation_errors().'</span>' ];
 
-			  
+
 
          }else{
 
-			 
+
 
 				$post = $this->input->post();
 
-				
+
 
 				//print_r($_FILES['productImage']); die;
 
-				
 
- 				if(isset($_FILES['product_Image']['name']) && !empty($_FILES['product_Image']['name'])){	
+
+ 				if(isset($_FILES['product_Image']['name']) && !empty($_FILES['product_Image']['name'])){
 
 
 
@@ -698,9 +720,9 @@ class OrderController extends CI_Controller {
 
 				}
 
-				
 
-				 
+
+
 
  				 $post['Available_qty'] = $post['Available_qty'];
 
@@ -722,19 +744,19 @@ class OrderController extends CI_Controller {
 
 				 $post['create_date'] = date('Y-m-d H:i:s');
 
-				 
+
 
 				 $id = $post['product_Id'];
 
 				 unset($post['product_Id'],$post['product_Image']);
 
-				 
 
- 				  
+
+
 
  				$query = $this->ProductModel->UpdateProductByID($this->OuthModel->xss_clean($post),$id);
 
-				 
+
 
 				$response='';
 
@@ -750,15 +772,15 @@ class OrderController extends CI_Controller {
 
            }
 
- 
+
 		   echo json_encode($response);
 
-		
+
 
  	}
 
-	 	
-public function order_trash(){ 
+
+public function order_trash(){
 
 	//sleep(5);
 
@@ -770,29 +792,28 @@ public function order_trash(){
 
 		if($product){
 
-			$json_data = [ "status"            => 1,  
+			$json_data = [ "status"            => 1,
 
-					"message"    => 'One order Deleted !',   
+					"message"    => 'One order Deleted !',
 
  					];
 
 		}else{
 
-			$json_data = [ "status" =>0,  
+			$json_data = [ "status" =>0,
 
-					"message"    => 'false',   
+					"message"    => 'false',
 
  					];
 
 		}
 
-		echo json_encode($json_data); 
+		echo json_encode($json_data);
 
-		
+
 
  	}
 
-	
+
 
 }
-

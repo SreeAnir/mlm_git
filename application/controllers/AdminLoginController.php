@@ -6,7 +6,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminLoginController extends CI_Controller {
 
- 
+	
+	public function __construct() { 
+		parent::__construct(); 
+		$this->load->model(['MemberModel']);
+	}
 
 	public function index() 
 
@@ -375,6 +379,144 @@ public function confirm_page()
  		$this->parser->parse('login/forgot_password_template',[]);
 
 	}
+	public function register_user(){
+		$return=$this->input->get('return');
+ 
+		$this->parser->parse('register/register_view',['return' =>$return ]);
+
+   }
+
+public function newUserRegisterSave(){
+	$post = $this->input->post();
+	// var_dump($_REQUEST);
+	$profile_url='';
+	// var_dump($_FILES) ;
+	// die();
+	$redirect_url =base_url();
+	if(isset($post['redirect_url'] ) && $post['redirect_url'] !="" ){
+		$redirect_url = $post['redirect_url'] ;
+	}
+
+	if(isset($_FILES['photo']['name']) && !empty($_FILES['photo']['name'])){	
+
+
+    $config['upload_path']          = './uploads/profiles';
+
+    $config['allowed_types']        = 'png|jpg|jpeg';
+
+    $config['max_size']             = 500;
+
+     //$config['max_width']            = 1024;
+
+     //$config['max_height']           = 768;
+
+     $this->load->library('upload', $config);
+
+     if ( ! $this->upload->do_upload('photo'))
+
+     {
+
+            $AtError = $this->upload->display_errors();
+
+            echo json_encode(['status' => 0 ,'message' => $AtError]);
+
+            die;
+
+     }
+
+     else
+
+     {
+
+            $file_data = $this->upload->data();
+
+            $profile_url = $file_data['file_name'];
+
+     }	
+
+	}
+
+    
+    $e = $this->UserModel->IfExistEmail($post['Email']);
+
+    if($e == false){
+
+        $genreatePassword = $this->OuthModel->RandomPassword(8, true, false,true);
+        // $mail=1;
+        $mail = $this->SendMail(['templateName' => $post['CustomerName'],'templateEmail' => $post['Email'], 'templatePassword' => $genreatePassword, ]);
+        // mail function not local server
+        // please uncomment live run server 
+      /////////////////  if($mail == 1){
+
+		
+                $member_data = [ 	
+
+                            'name' => $post['CustomerName'],
+
+                            'username' => $post['Email'],
+
+                            'password' => $this->OuthModel->HashPassword($genreatePassword),
+
+                            'role' => 'Customer',
+
+                            'email' => $post['Email'],
+
+                            'mobile_no' => $post['Mobile'],
+
+                            'pincode' => $post['Pincode'], 
+
+                            'address' => $post['Address'],
+
+                            'AccountNumber' => $post['AccountNumber'],
+
+                            'IFSCCode' => $post['IFSCCode'],
+
+                            'picture_url' => $profile_url,
+
+                            'ip_address' => $this->input->ip_address(),
+
+                            'created' => date('Y-m-d H:i:s'),
+
+                        ];
+
+            $create_member = $this->UserModel->AddMember($this->OuthModel->xss_clean($member_data));
+					
+			
+            $member_id=$create_member;
+
+            
+
+			$this->MemberModel->AddMemberLog( ['id'=> $member_id, 'name' => $post['CustomerName'], 'parent_id' => $post['ReferenceMemberId'] ]); 
+			$this->session->set_flashdata('message_register',"Please Login to purchase the item");
+						
+
+        /*  }else{
+
+
+                $response = [
+
+                'status' => 0,
+
+                'message' => 'Faild to Send Mail. Please try again !'
+
+            ];
+			$this->session->set_flashdata('message_register',"Faild to Send Mail. Please try again !");
+ 
+		}	*/
+		redirect($redirect_url);
+
+		}else{
+
+			// $response = ['status' => 0 ,'message' => '<span style="color:#900;">Sorry Your Email already use in the database !</span>' 						];
+
+		// echo json_encode($response); die;
+		$this->session->set_flashdata('message_register',"Sorry Your Email already use in the database !");
+
+		redirect_back();  
+
+		}
+
+	   }
 
 	public function forgot_password_email(){
 

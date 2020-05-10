@@ -69,7 +69,7 @@ unit_price= $('#unit_price').val();  type="hidden"-->
   <p class="theme-heading"> Product Details </p>
 
    <div class="thumb-payment col-xs-12 col-sm-12 col-md-3 col-lg-3">   
-            <img src="<?php echo base_url('uploads/products/'.$details->productImage ) ;?>" alt="194x228"> 
+            <img style="max-width: 100%;" src="<?php echo base_url('uploads/products/'.$details->productImage ) ;?>" alt="194x228"> 
            </div>    
   <div class="thumb-payment col-xs-12 col-sm-12 col-md-9 col-lg-9">          
   <h4> <a target="_blank" href="<?php echo base_url(); ?>view/<?php echo $this->encrypt->encode( $product_id ); ?>/ <?php echo $details->ProductName ; ?>"> <?php echo $details->ProductName ; ?> </a> </h4>

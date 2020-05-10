@@ -1,0 +1,46 @@
+body {
+  background: linear-gradient(-45deg, #174523,#360d33, #002d3d, #172b57) !important;
+  background-size: 400% 400% !important;
+  animation: gradient 15s ease infinite !important;
+}
+
+@keyframes gradient {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+.login-box{
+  width: 450px !important;
+}
+.login-box-body{
+  /* border-radius: 10px; */
+}
+.login-box-msg{
+  line-height: 40px;
+  font-size: 20px;
+  color: #162838;
+}
+.login-logo b{
+  color :#FFF !important ;
+}
+.register-wraper{
+ width: 64%;
+   margin: 1% auto;
+}
+.message_box_wrapper{
+  width: 100%;
+  background-color: #ecf6ffe8;
+  line-height: 30px;
+  color: #f71e03;
+  text-align: center;
+  font-size: 18px;
+  text-transform: capitalize;
+  margin-bottom: 5px;
+  padding: 5px;
+}

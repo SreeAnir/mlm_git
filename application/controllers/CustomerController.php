@@ -19,9 +19,9 @@ class CustomerController extends CI_Controller {
 
         }
 
-	
 
-	public function index() 
+
+	public function index()
 
 	{
 
@@ -29,7 +29,7 @@ class CustomerController extends CI_Controller {
 
 	}
 
-	
+
 
 
 
@@ -39,13 +39,13 @@ class CustomerController extends CI_Controller {
 
 		$this->OuthModel->CSRFVerify();
 
- 		// storing  request (ie, get/post) global array to a variable  
+ 		// storing  request (ie, get/post) global array to a variable
 
 		$requestData = $_REQUEST;
 
  		//print_r($requestData);
 
- 
+
 
   		$table = "users";
 
@@ -69,7 +69,7 @@ class CustomerController extends CI_Controller {
 
 		$totalFiltered = $totalData; // rules datatable
 
-  		
+
 
 		$where = " WHERE `role` = 'Customer' ";
 
@@ -77,19 +77,19 @@ class CustomerController extends CI_Controller {
 
  		$sql.=" FROM ".$table . $where ;
 
- 		
 
-  		
+
+
 
 		if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-			
+
 
 			$searchValue = $requestData['search']['value'];
 
- 				
 
-			$sql.=" AND `name` LIKE '%".$searchValue."%' ";   
+
+			$sql.=" AND `name` LIKE '%".$searchValue."%' ";
 
  			$sql.=" OR `email` LIKE '%".$searchValue."%' ";
 
@@ -97,41 +97,35 @@ class CustomerController extends CI_Controller {
 
 		}
 
- 		
 
-		
+
+
 
  		$query = $this->db->query($sql);
 
  		$totalFiltered = $query->num_rows(); // rules datatable
 
- 		//ORDER BY id DESC	
+ 		//ORDER BY id DESC
 
  		$sql.=" ORDER BY  created  ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
  		$query = $this->db->query($sql);
 
- 		//echo $sql;
 
  		$SearchResults = $query->result();
 
-		
+
 
   		$data = array();
 
 		foreach($SearchResults as $row){
 
-			$nestedData=array(); 
+			$nestedData=array();
 
-			
 
 			$id = $row->id;
 
-			
-
 			$url_id=$this->OuthModel->Encryptor('encrypt',$row->id);
-
-			
 
 			$tableCheckTD = "<label class='pos-rel'><input type='checkbox' class='ace' /><span class='lbl'></span></label>";
 
@@ -141,15 +135,22 @@ class CustomerController extends CI_Controller {
 
 																</a>&nbsp;&nbsp;&nbsp;
 
- 																<a onclick="trash('.$id.')"  class="red trashID" href="javascript:void(0);">
 
-																	<i class="ace-icon fa fa-trash-o bigger-130"></i>
+																<a  href="'.base_url('v3/member-order-view?id='.$id).'"  class="red trashID" href="javascript:void(0);">
 
-																</a>
+																   <i class="ace-icon fa fa fa-bars bigger-130"></i>
+
+															   </a>
+															   &nbsp;&nbsp;&nbsp;
+															   <a onclick="trash('.$id.')"  class="red trashID" href="javascript:void(0);">
+
+															   <i class="ace-icon fa fa-trash-o bigger-130"></i>
+
+														   </a>
 
  															</div>';
 
- 			
+
 
  			$nestedData[] = '<span class="nameID_'.$id.'">'.$row->id.'</span>';
 
@@ -163,7 +164,7 @@ class CustomerController extends CI_Controller {
 
  			$nestedData[] = $row->created;
 
-			$nestedData[] =  $action; 
+			$nestedData[] =  $action;
 
   			$data[] = $nestedData;
 
@@ -171,65 +172,64 @@ class CustomerController extends CI_Controller {
 
  		$json_data = array(
 
-					"draw"            => intval( $requestData['draw'] ),  
+					"draw"            => intval( $requestData['draw'] ),
 
 					"recordsTotal"    => intval( $totalData ),  // total number of records
 
-					"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching,  
+					"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching,
 
 					"data"            => $data   // total data array
 
 					);
 
- 		echo json_encode($json_data);  // send data as json format					
+ 		echo json_encode($json_data);  // send data as json format
 
  	}
 
-	
 
-	public function trash(){ 
 
-	//sleep(1); 
+	public function trash(){
+
+	//sleep(1);
 
 		$this->OuthModel->CSRFVerify();
 
 		$id=$this->input->get('id');
 
-		
+
 
  		$product = $this->UserModel->TrashByID($id);
 
 		if($product != false){
 
-			$this->MemberModel->TrashByID($id); /// delete member log 
+			$this->MemberModel->TrashByID($id); /// delete member log
 
-			$json_data = [ "status"            => 1,  
+			$json_data = [ "status"            => 1,
 
-					"message"    => 'One Member Deleted !',   
+					"message"    => 'One Member Deleted !',
 
  					];
 
 		}else{
 
-			$json_data = [ "status" =>0,  
+			$json_data = [ "status" =>0,
 
-					"message"    => 'false',   
+					"message"    => 'false',
 
  					];
 
 		}
 
-		echo json_encode($json_data); 
+		echo json_encode($json_data);
 
-		
+
 
  	}
 
-	
 
- 
 
-	
+
+
+
 
 }
-

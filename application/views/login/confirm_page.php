@@ -142,12 +142,9 @@
 
     <!-- /.social-auth-links -->
 
+  <a style="width:50%;"   href="<?=base_url('i-forgot-my-password');?>">I forgot my password</a>
 
-
-    <a href="<?=base_url('i-forgot-my-password');?>">I forgot my password</a><br>
-
-    <!--<a href="register.html" class="text-center">Register a new membership</a>-->
-
+  <a style="width: 50%; float: right;text-align: right;"  href="<?=base_url('register');?>" >Register</a>
 
 
   </div>

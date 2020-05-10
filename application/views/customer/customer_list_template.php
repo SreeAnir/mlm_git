@@ -24,7 +24,7 @@
 
 
 
-  
+
 
 </head>
 
@@ -84,7 +84,7 @@
 
               <h3 class="box-title">&nbsp;</h3>
 
-               
+
 
             </div>
 
@@ -118,7 +118,7 @@
 
                 <tbody>
 
-                  
+
 
                 </tbody>
 
@@ -170,11 +170,11 @@
 
   <!-- /.content-wrapper -->
 
-  
 
-  
 
- 
+
+
+
 
 
 
@@ -184,7 +184,7 @@
 
     <div class="modal-dialog modal-lg">
 
-    
+
 
       <!-- Modal content-->
 
@@ -200,7 +200,7 @@
 
         <div class="modal-body">
 
-          
+
 
                 <div id="tableData">
 
@@ -216,11 +216,11 @@
 
                 </div>
 
-          
 
-          
 
-          
+
+
+
 
         </div>
 
@@ -232,19 +232,19 @@
 
       </div>
 
-      
+
 
     </div>
 
   </div>
 
-  <!-- Modal --> 
+  <!-- Modal -->
 
   <div class="modal fade" id="myModal2" role="dialog">
 
     <div class="modal-dialog modal-lg">
 
-    
+
 
       <!-- Modal content-->
 
@@ -284,13 +284,13 @@
 
       </div>
 
-      
+
 
     </div>
 
   </div>
 
-  
+
 
 <?php $this->load->view('include/footer');?>
 
@@ -316,17 +316,17 @@
 
 	 					"processing": true,
 
-						"serverSide": true, 
+						"serverSide": true,
 
 						"ajax":{
 
-							url :"<?=base_url('customer-grid-data')?>", 
+							url :"<?=base_url('customer-grid-data')?>",
 
-							type: "post",  
+							type: "post",
 
 							headers: { 'Authkey': '<?=$this->security->get_csrf_hash();?>'},
 
-							error: function(){  
+							error: function(){
 
 								$(".contacts-grid-error").html("");
 
@@ -334,7 +334,7 @@
 
 								$("#contacts-grid_processing").css("display","none");
 
-							} 
+							}
 
 						},
 
@@ -342,11 +342,10 @@
 
   });
 
-  
 
 function trash(id){
 
-	
+
 
    	$("#element_overlapT").LoadingOverlay("show");
 
@@ -406,13 +405,12 @@ function trash(id){
 
 }
 
- 
+
 
 </script>
 
- 
+
 
 </body>
 
 </html>
-

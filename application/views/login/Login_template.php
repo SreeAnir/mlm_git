@@ -36,10 +36,9 @@
 
   <link rel="stylesheet" href="<?=base_url('public')?>/plugins/iCheck/square/blue.css">
 
+  <link rel="stylesheet" href="<?=base_url('public')?>/plugins/iCheck/square/blue.css">
 
-
- 
-
+  <link rel="stylesheet" href="<?=base_url('public')?>/dist/css/login_page.css">
 
 
   <!-- Google Font -->
@@ -54,7 +53,7 @@
 
   <div class="login-logo">
 
-    <a href="<?=base_url();?>"><b>MLM</b></a>
+    <a href="<?=base_url();?>home"><b>MLM</b></a>
 
   </div>
 
@@ -62,8 +61,7 @@
 
   <div class="login-box-body">
 
-    <p class="login-box-msg">Sign in to start your session  OR 
-    <a href="<?=base_url();?>home">Back To Home</a>
+    <p class="login-box-msg">Sign in to start your session 
 </p>
 
 
@@ -151,9 +149,9 @@
 
 
 
-    <a href="<?=base_url('i-forgot-my-password');?>">I forgot my password</a><br>
+    <a style="width:50%;"   href="<?=base_url('i-forgot-my-password');?>">I forgot my password</a>
 
-    <!--<a href="register.html" class="text-center">Register a new membership</a>-->
+    <a style="width: 50%; float: right;text-align: right;"  href="<?=base_url('register');?>" >Register</a>
 
 
 

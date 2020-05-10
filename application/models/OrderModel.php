@@ -8,17 +8,17 @@ class OrderModel extends CI_Model {
                 parent::__construct();
                 // Your own constructor code
         }
-	
+
 	private $Order = 'orders';
 	private $Member = 'member_log';
 	private $ProfitShare = 'profit_share';
 	private $Product = 'products';
 	private $PoCode = "pocode";
 	private $CompanyUserAdmin = 2;
- 	
+
 	public function AddOrder($data)
-	{  
-		 $res = $this->db->insert($this->Order, $data ); 
+	{
+		 $res = $this->db->insert($this->Order, $data );
 		 $this->updateProfitForParents($data );
 		if($res == 1)
 			return true;
@@ -31,14 +31,17 @@ class OrderModel extends CI_Model {
 		$this->db->where("user_id",$data['user_id']);
 		$this->db->where("po_code",$data['poCode']);
 		$this->db->where("status",1);
-		$query = $this->db->get(); 
+		$query = $this->db->get();
 		return ($query->row()) ;
 	 }
 	 public function updatePOCode($data){
-		$res = $this->db->update($this->PoCode, array("status" => 2) ,["user_id" =>$data['user_id'] ,"po_code" => $data['poCode'] ] ); 
+		$res = $this->db->update($this->PoCode, array("status" => 2) ,["user_id" =>$data['user_id'] ,"po_code" => $data['poCode'] ] );
 		return true;
 	 }
-	 
+   public function insertPOForUser($data){
+   $res = $this->db->insert($this->PoCode, array("status" => 1 ) ,["user_id" =>$data['user_id'] ,"po_code" => $data['poCode'] ] );
+   return true;
+  }
 	 public function manualOrder(){
 		$data=array();
 		print_r($_SESSION);
@@ -61,7 +64,7 @@ class OrderModel extends CI_Model {
 		$this->db->from($this->Product);
 
 		$this->db->where("id",$product_id);
-		$query = $this->db->get(); 
+		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
 			$Price = $query->row()->Price;
 			$SalePrice = $query->row()->SalePrice;
@@ -73,19 +76,19 @@ class OrderModel extends CI_Model {
 
 	 }
 	 public function updateProfitForParents($data=array()){
-		 
-		$member_id = $data['member_id'] ; 
+
+		$member_id = $data['member_id'] ;
 		$find_my_parent= $data['member_id'] ;
 		$order_id =   $data['order_id'] ;
 		$product_id =  $data['product_id'] ;
-		
-		$profit_total = $this->getProductProfit($data); 
+
+		$profit_total = $this->getProductProfit($data);
 		$levels=1  ;
 		while( $levels <= 8 ){
 			// echo $levels ;
-			
+
 			$find_my_parent = $this->getHigherLevel($find_my_parent) ;
-			//ProfitShare , insert data 
+			//ProfitShare , insert data
 				if( $find_my_parent == 0 ){
 					$find_my_parent= $this->CompanyUserAdmin;
 
@@ -94,11 +97,11 @@ class OrderModel extends CI_Model {
 				$data_profit['order_id'] = $order_id ;
 				$data_profit['member_id'] = $member_id ;
 				$data_profit['parent_id'] = $find_my_parent ;
-				$data_profit['clear_status'] = 0;	
+				$data_profit['clear_status'] = 0;
 				if($this->CompanyUserAdmin ==  $find_my_parent  ){
-					$data_profit['clear_status'] = 1;	
+					$data_profit['clear_status'] = 1;
 				}
-				
+
 				if($levels==1){
 					$profit_percentage=35;
 				}
@@ -118,15 +121,15 @@ class OrderModel extends CI_Model {
 				$data_profit['level'] = $levels ;
 				$data_profit['profit_percentage'] =$profit_percentage;
 				$data_profit['product_id'] = $product_id ;
-				$update_profie = $this->db->insert($this->ProfitShare, $data_profit );  
+				$update_profie = $this->db->insert($this->ProfitShare, $data_profit );
 				$levels++;
 
 		}
-		 
-	}
- 	public function getHigherLevel($parent_id) 
 
-	{  
+	}
+ 	public function getHigherLevel($parent_id)
+
+	{
 
  		$this->db->select('parent_id');
 
@@ -134,7 +137,7 @@ class OrderModel extends CI_Model {
 
 		$this->db->where("id",$parent_id);
 
-		$query = $this->db->get(); 
+		$query = $this->db->get();
 
  		if ($query->num_rows() > 0) {
 			 return $query->row()->parent_id;
@@ -145,17 +148,17 @@ class OrderModel extends CI_Model {
    	}
 
 	public function UpdateProductByID($data,$product_id)
-	{  
- 
- 		$res = $this->db->update($this->Product, $data ,['id' => $product_id ] ); 
+	{
+
+ 		$res = $this->db->update($this->Product, $data ,['id' => $product_id ] );
 		if($res == 1)
 			return true;
 		else
 			return false;
  	}
-	
+
   	public function SearchOrderByID($order_id)
-	{  
+	{
  		$this->db->select('*');
 		$this->db->from($this->Order);
 		$this->db->where("order_id",$order_id);
@@ -167,20 +170,20 @@ class OrderModel extends CI_Model {
 			 return false;
 		 }
    	}
-	
-	
+
+
 	public function MonthWiseSale()
-	{  
+	{
  		$this->db->select('unit_price,create_date');
 		$this->db->from($this->Order);
    		$query = $this->db->get();
  		return $query->result_array();
-		 
+
    	}
 
-	
+
   	public function GetUserData()
-	{  
+	{
  		$this->db->select('id,mobile_no,address,city,country,vat_number,picture_url,pincode');
 		$this->db->from($this->User);
 		$this->db->where("id",$this->session->userdata('id'));
@@ -192,9 +195,9 @@ class OrderModel extends CI_Model {
 			 return false;
 		 }
    	}
-	
+
 	public function PictureUrl()
-	{  
+	{
  		$this->db->select('id,picture_url');
 		$this->db->from($this->User);
 		$this->db->where("id",$this->session->userdata('id'));
@@ -203,11 +206,11 @@ class OrderModel extends CI_Model {
 		$res = $query->row_array();
 		return $res['picture_url'];
    	}
-	
-	
-	
-	 public function GetProductById($id) 
-	{  
+
+
+
+	 public function GetProductById($id)
+	{
  		$this->db->select('*');
 		$this->db->from($this->Product);
 		$this->db->where("id",$id);
@@ -220,5 +223,5 @@ class OrderModel extends CI_Model {
 		 }
    	}
 
- 
+
  }
